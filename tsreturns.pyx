@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 
-def ts_returns(some_df,timestamps,tw,theos=pd.Series(),mode='bp',buckets=[-10000,-1000,-100,-10,-1,-.1,-.01,0,.01,.1,1,10,100,1000,10000]):
+def ts_returns(some_df,timestamps,tw,theos=pd.Series(),mode='bp', buckets=[-10000,-1000,-100,-10,-1,-.1,-.01,0,.01,.1,1,10,100,1000,10000], colnames = ['bp0','bz0','ap0','az0']):
     """
     Calculates basis point returns from array of long timestamps indexing into ref frame.
     
@@ -39,8 +39,8 @@ def ts_returns(some_df,timestamps,tw,theos=pd.Series(),mode='bp',buckets=[-10000
             k = this_pos
             b = bucks[j] #this bucket
             if b==0:
-                vals[i,j] = wmid(some_df.ix[this_stamp,'bid1'],some_df.ix[this_stamp,'bidsize1'],\
-                           some_df.ix[this_stamp,'ask1'],some_df.ix[this_stamp,'asksize1'],tw) 
+                vals[i,j] = wmid(some_df.ix[this_stamp,colnames[0]],some_df.ix[this_stamp,colnames[1]],\
+                           some_df.ix[this_stamp,colnames[2]],some_df.ix[this_stamp,colnames[3]],tw) 
                 continue
             window_stop = (long)(ts[i] + b * A_MILLI)
             if b<0:
@@ -54,8 +54,8 @@ def ts_returns(some_df,timestamps,tw,theos=pd.Series(),mode='bp',buckets=[-10000
                 if k>=f_len:
                     k=f_len-1
             stop_stamp = some_df.index[k]
-            vals[i,j] = wmid(some_df.ix[stop_stamp,'bid1'],some_df.ix[stop_stamp,'bidsize1'],\
-                           some_df.ix[stop_stamp,'ask1'],some_df.ix[stop_stamp,'asksize1'],tw) 
+            vals[i,j] = wmid(some_df.ix[stop_stamp,colnames[0]],some_df.ix[stop_stamp,colnames[1]],\
+                           some_df.ix[stop_stamp,colnames[2]],some_df.ix[stop_stamp,colnames[3]],tw) 
 
     
     res = pd.DataFrame(vals,index=pd.to_datetime(timestamps),columns=buckets)
@@ -69,7 +69,7 @@ def ts_returns(some_df,timestamps,tw,theos=pd.Series(),mode='bp',buckets=[-10000
 
 
 
-def vol_buckets(some_df,timestamps,buckets=[-10000,-1000,-100,-10,-1,-.1,-.01,0,.01,.1,1,10,100,1000,10000]):
+def vol_buckets(some_df,timestamps,buckets=[-10000,-1000,-100,-10,-1,-.1,-.01,0,.01,.1,1,10,100,1000,10000], colnames=['lastsize']):
     """
     Calculates contract volume sums indexed off array timestamps into ref frame.
     
@@ -132,7 +132,7 @@ def vol_buckets(some_df,timestamps,buckets=[-10000,-1000,-100,-10,-1,-.1,-.01,0,
             #now step FORWARD through to calculate the sum volumes
             while k<=temp:
                 stop_stamp = some_df.index[k]
-                vals[i,j] += labz(some_df.ix[stop_stamp,'tradesize'])
+                vals[i,j] += labz(some_df.ix[stop_stamp,colnames[0]])
                 k+=1
                 
     res = pd.DataFrame(vals,index=pd.to_datetime(timestamps),columns=buckets)
