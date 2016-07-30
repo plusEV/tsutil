@@ -20,7 +20,7 @@ cdef inline long labz(long a) : return a if a >= 0 else -1 * a
 
 include "timestamps.pyx"
 include "tsreturns.pyx"
-include "tsvis.pyx"
+#include "tsvis.pyx"
 include "ou.pyx"
 include "core.pyx"
 include "streaker.pyx"

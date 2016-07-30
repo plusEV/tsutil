@@ -3,7 +3,8 @@ import numpy as np
 import pandas as pd
 
 
-def ts_returns(some_df,timestamps,tw,theos=pd.Series(),mode='bp', buckets=[-10000,-1000,-100,-10,-1,-.1,-.01,0,.01,.1,1,10,100,1000,10000], colnames = ['bp0','bz0','ap0','az0']):
+def ts_returns(some_df,timestamps,tw,theos=pd.Series(),mode='bp', 
+                buckets=[-180000,-30000,-10000,-5000,-1000,0,1000,5000,10000,30000,180000], colnames = ['bp0','bz0','ap0','az0']):
     """
     Calculates basis point returns from array of long timestamps indexing into ref frame.
     
@@ -33,7 +34,9 @@ def ts_returns(some_df,timestamps,tw,theos=pd.Series(),mode='bp', buckets=[-1000
     for i in range(t_len):
         this_stamp = some_df.index[(bisect.bisect_right(some_df.index,ts[i])-1)]
         this_pos = some_df.index.get_loc(this_stamp) #position in dataframe of this timestamp
-
+        
+        if this_pos >= f_len:
+            continue
         
         for j in range(b_len):
             k = this_pos
@@ -49,11 +52,13 @@ def ts_returns(some_df,timestamps,tw,theos=pd.Series(),mode='bp', buckets=[-1000
                 if k<0:
                     k=0
             else:
-                while some_df.index[k]<window_stop and k<f_len:
+                while k < f_len and some_df.index[k]<window_stop:
                     k+=1
                 if k>=f_len:
                     k=f_len-1
             stop_stamp = some_df.index[k]
+            if (stop_stamp - this_stamp) > (buckets[-1]*2*A_MILLI):
+                continue #don't include cross session nonsense
             vals[i,j] = wmid(some_df.ix[stop_stamp,colnames[0]],some_df.ix[stop_stamp,colnames[1]],\
                            some_df.ix[stop_stamp,colnames[2]],some_df.ix[stop_stamp,colnames[3]],tw) 
 
@@ -63,8 +68,8 @@ def ts_returns(some_df,timestamps,tw,theos=pd.Series(),mode='bp', buckets=[-1000
         print "Using Theos..."
         res[0.0] = theos.values
     if mode=='bp':
-        return ((res - res[0.0]) / res[0.0] * 1e4)
-    return (res - res[0.0])/ tw
+        return ((res.sub(res[0.0],axis=0)) / res[0.0] * 1e4)
+    return (res.sub(res[0.0],axis=0))/ tw
 
 
 
