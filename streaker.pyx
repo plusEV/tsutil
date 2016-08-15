@@ -48,7 +48,7 @@ def streaker(np.ndarray[long,ndim=1] times, np.ndarray[double,ndim=1] prices,
 @cython.cdivision(True)
 @cython.boundscheck(False)
 def streaker_with_refs(np.ndarray[long,ndim=1] times, np.ndarray[double,ndim=1] prices, 
-    np.ndarray[long,ndim=1] volumes,np.ndarray[double,ndim=1] refs, long window_size):
+    np.ndarray[long,ndim=1] volumes,np.ndarray[double,ndim=1] refs, long window_size, long cap = 100):
     """
     Times MUST be a unique list of timestamps as LONGS. Prices should be 
     ZERO or NaN if no trade at that tick. Same is true for volumes. Window
@@ -74,7 +74,7 @@ def streaker_with_refs(np.ndarray[long,ndim=1] times, np.ndarray[double,ndim=1] 
         ref = refs[i]
         
         #climb back to find the start of the window
-        while times[j]>= window_start and j>=0:
+        while times[j]>= window_start and j>=0 and j >= (i-cap):
             j-=1
         j+=1
         #now step FORWARD through to calculate the streaks

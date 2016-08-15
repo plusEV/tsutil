@@ -1393,6 +1393,7 @@ static const char __pyx_k_ap0[] = "ap0";
 static const char __pyx_k_az0[] = "az0";
 static const char __pyx_k_bp0[] = "bp0";
 static const char __pyx_k_bz0[] = "bz0";
+static const char __pyx_k_cap[] = "cap";
 static const char __pyx_k_dWt[] = "dWt";
 static const char __pyx_k_end[] = "end";
 static const char __pyx_k_err[] = "err";
@@ -1558,6 +1559,7 @@ static PyObject *__pyx_n_s_bp0;
 static PyObject *__pyx_n_s_buckets;
 static PyObject *__pyx_n_s_bucks;
 static PyObject *__pyx_n_s_bz0;
+static PyObject *__pyx_n_s_cap;
 static PyObject *__pyx_n_s_colnames;
 static PyObject *__pyx_n_s_columns;
 static PyObject *__pyx_n_s_current_time;
@@ -1700,7 +1702,7 @@ static PyObject *__pyx_pf_6tsutil_16bidask_asof(CYTHON_UNUSED PyObject *__pyx_se
 static PyObject *__pyx_pf_6tsutil_18trades_asof(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_some_df, PyObject *__pyx_v_some_sides); /* proto */
 static PyObject *__pyx_pf_6tsutil_20run_strat(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_some_df, PyObject *__pyx_v_theos_frame); /* proto */
 static PyObject *__pyx_pf_6tsutil_22streaker(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_times, PyArrayObject *__pyx_v_prices, PyArrayObject *__pyx_v_volumes, long __pyx_v_window_size); /* proto */
-static PyObject *__pyx_pf_6tsutil_24streaker_with_refs(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_times, PyArrayObject *__pyx_v_prices, PyArrayObject *__pyx_v_volumes, PyArrayObject *__pyx_v_refs, long __pyx_v_window_size); /* proto */
+static PyObject *__pyx_pf_6tsutil_24streaker_with_refs(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_times, PyArrayObject *__pyx_v_prices, PyArrayObject *__pyx_v_volumes, PyArrayObject *__pyx_v_refs, long __pyx_v_window_size, long __pyx_v_cap); /* proto */
 static PyObject *__pyx_pf_6tsutil_26fix_times(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_df_times); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
@@ -9399,7 +9401,7 @@ static PyObject *__pyx_pf_6tsutil_22streaker(CYTHON_UNUSED PyObject *__pyx_self,
  * @cython.cdivision(True)
  * @cython.boundscheck(False)
  * def streaker_with_refs(np.ndarray[long,ndim=1] times, np.ndarray[double,ndim=1] prices,             # <<<<<<<<<<<<<<
- *     np.ndarray[long,ndim=1] volumes,np.ndarray[double,ndim=1] refs, long window_size):
+ *     np.ndarray[long,ndim=1] volumes,np.ndarray[double,ndim=1] refs, long window_size, long cap = 100):
  *     """
  */
 
@@ -9413,16 +9415,18 @@ static PyObject *__pyx_pw_6tsutil_25streaker_with_refs(PyObject *__pyx_self, PyO
   PyArrayObject *__pyx_v_volumes = 0;
   PyArrayObject *__pyx_v_refs = 0;
   long __pyx_v_window_size;
+  long __pyx_v_cap;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("streaker_with_refs (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_times,&__pyx_n_s_prices,&__pyx_n_s_volumes,&__pyx_n_s_refs,&__pyx_n_s_window_size,0};
-    PyObject* values[5] = {0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_times,&__pyx_n_s_prices,&__pyx_n_s_volumes,&__pyx_n_s_refs,&__pyx_n_s_window_size,&__pyx_n_s_cap,0};
+    PyObject* values[6] = {0,0,0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
         case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
         case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
@@ -9439,45 +9443,58 @@ static PyObject *__pyx_pw_6tsutil_25streaker_with_refs(PyObject *__pyx_self, PyO
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_prices)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("streaker_with_refs", 1, 5, 5, 1); __PYX_ERR(5, 50, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("streaker_with_refs", 0, 5, 6, 1); __PYX_ERR(5, 50, __pyx_L3_error)
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_volumes)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("streaker_with_refs", 1, 5, 5, 2); __PYX_ERR(5, 50, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("streaker_with_refs", 0, 5, 6, 2); __PYX_ERR(5, 50, __pyx_L3_error)
         }
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_refs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("streaker_with_refs", 1, 5, 5, 3); __PYX_ERR(5, 50, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("streaker_with_refs", 0, 5, 6, 3); __PYX_ERR(5, 50, __pyx_L3_error)
         }
         case  4:
         if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_window_size)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("streaker_with_refs", 1, 5, 5, 4); __PYX_ERR(5, 50, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("streaker_with_refs", 0, 5, 6, 4); __PYX_ERR(5, 50, __pyx_L3_error)
+        }
+        case  5:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_cap);
+          if (value) { values[5] = value; kw_args--; }
         }
       }
       if (unlikely(kw_args > 0)) {
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "streaker_with_refs") < 0)) __PYX_ERR(5, 50, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
-      goto __pyx_L5_argtuple_error;
     } else {
-      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
-      values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
-      values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
+        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
     }
     __pyx_v_times = ((PyArrayObject *)values[0]);
     __pyx_v_prices = ((PyArrayObject *)values[1]);
     __pyx_v_volumes = ((PyArrayObject *)values[2]);
     __pyx_v_refs = ((PyArrayObject *)values[3]);
     __pyx_v_window_size = __Pyx_PyInt_As_long(values[4]); if (unlikely((__pyx_v_window_size == (long)-1) && PyErr_Occurred())) __PYX_ERR(5, 51, __pyx_L3_error)
+    if (values[5]) {
+      __pyx_v_cap = __Pyx_PyInt_As_long(values[5]); if (unlikely((__pyx_v_cap == (long)-1) && PyErr_Occurred())) __PYX_ERR(5, 51, __pyx_L3_error)
+    } else {
+      __pyx_v_cap = ((long)0x64);
+    }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("streaker_with_refs", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(5, 50, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("streaker_with_refs", 0, 5, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(5, 50, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("tsutil.streaker_with_refs", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -9487,7 +9504,7 @@ static PyObject *__pyx_pw_6tsutil_25streaker_with_refs(PyObject *__pyx_self, PyO
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_prices), __pyx_ptype_5numpy_ndarray, 1, "prices", 0))) __PYX_ERR(5, 50, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_volumes), __pyx_ptype_5numpy_ndarray, 1, "volumes", 0))) __PYX_ERR(5, 51, __pyx_L1_error)
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_refs), __pyx_ptype_5numpy_ndarray, 1, "refs", 0))) __PYX_ERR(5, 51, __pyx_L1_error)
-  __pyx_r = __pyx_pf_6tsutil_24streaker_with_refs(__pyx_self, __pyx_v_times, __pyx_v_prices, __pyx_v_volumes, __pyx_v_refs, __pyx_v_window_size);
+  __pyx_r = __pyx_pf_6tsutil_24streaker_with_refs(__pyx_self, __pyx_v_times, __pyx_v_prices, __pyx_v_volumes, __pyx_v_refs, __pyx_v_window_size, __pyx_v_cap);
 
   /* function exit code */
   goto __pyx_L0;
@@ -9498,7 +9515,7 @@ static PyObject *__pyx_pw_6tsutil_25streaker_with_refs(PyObject *__pyx_self, PyO
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6tsutil_24streaker_with_refs(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_times, PyArrayObject *__pyx_v_prices, PyArrayObject *__pyx_v_volumes, PyArrayObject *__pyx_v_refs, long __pyx_v_window_size) {
+static PyObject *__pyx_pf_6tsutil_24streaker_with_refs(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_times, PyArrayObject *__pyx_v_prices, PyArrayObject *__pyx_v_volumes, PyArrayObject *__pyx_v_refs, long __pyx_v_window_size, long __pyx_v_cap) {
   long __pyx_v_t_len;
   long __pyx_v_s_len;
   long __pyx_v_i;
@@ -9738,7 +9755,7 @@ static PyObject *__pyx_pf_6tsutil_24streaker_with_refs(CYTHON_UNUSED PyObject *_
     /* "streaker.pyx":77
  * 
  *         #climb back to find the start of the window
- *         while times[j]>= window_start and j>=0:             # <<<<<<<<<<<<<<
+ *         while times[j]>= window_start and j>=0 and j >= (i-cap):             # <<<<<<<<<<<<<<
  *             j-=1
  *         j+=1
  */
@@ -9752,13 +9769,19 @@ static PyObject *__pyx_pf_6tsutil_24streaker_with_refs(CYTHON_UNUSED PyObject *_
         goto __pyx_L7_bool_binop_done;
       }
       __pyx_t_12 = ((__pyx_v_j >= 0) != 0);
+      if (__pyx_t_12) {
+      } else {
+        __pyx_t_10 = __pyx_t_12;
+        goto __pyx_L7_bool_binop_done;
+      }
+      __pyx_t_12 = ((__pyx_v_j >= (__pyx_v_i - __pyx_v_cap)) != 0);
       __pyx_t_10 = __pyx_t_12;
       __pyx_L7_bool_binop_done:;
       if (!__pyx_t_10) break;
 
       /* "streaker.pyx":78
  *         #climb back to find the start of the window
- *         while times[j]>= window_start and j>=0:
+ *         while times[j]>= window_start and j>=0 and j >= (i-cap):
  *             j-=1             # <<<<<<<<<<<<<<
  *         j+=1
  *         #now step FORWARD through to calculate the streaks
@@ -9767,7 +9790,7 @@ static PyObject *__pyx_pf_6tsutil_24streaker_with_refs(CYTHON_UNUSED PyObject *_
     }
 
     /* "streaker.pyx":79
- *         while times[j]>= window_start and j>=0:
+ *         while times[j]>= window_start and j>=0 and j >= (i-cap):
  *             j-=1
  *         j+=1             # <<<<<<<<<<<<<<
  *         #now step FORWARD through to calculate the streaks
@@ -9811,13 +9834,13 @@ static PyObject *__pyx_pf_6tsutil_24streaker_with_refs(CYTHON_UNUSED PyObject *_
         if (__pyx_t_12) {
         } else {
           __pyx_t_10 = __pyx_t_12;
-          goto __pyx_L13_bool_binop_done;
+          goto __pyx_L14_bool_binop_done;
         }
         __pyx_t_15 = __pyx_v_j;
         if (__pyx_t_15 < 0) __pyx_t_15 += __pyx_pybuffernd_prices.diminfo[0].shape;
         __pyx_t_12 = (((*__Pyx_BufPtrStrided1d(double *, __pyx_pybuffernd_prices.rcbuffer->pybuffer.buf, __pyx_t_15, __pyx_pybuffernd_prices.diminfo[0].strides)) >= __pyx_v_ref) != 0);
         __pyx_t_10 = __pyx_t_12;
-        __pyx_L13_bool_binop_done:;
+        __pyx_L14_bool_binop_done:;
         if (__pyx_t_10) {
 
           /* "streaker.pyx":85
@@ -9838,7 +9861,7 @@ static PyObject *__pyx_pf_6tsutil_24streaker_with_refs(CYTHON_UNUSED PyObject *_
  *                     tots_buys+=volumes[j]
  *                 elif volumes[j]<0 and prices[j]<=ref: #it's a sell at or below ref
  */
-          goto __pyx_L12;
+          goto __pyx_L13;
         }
 
         /* "streaker.pyx":86
@@ -9854,13 +9877,13 @@ static PyObject *__pyx_pf_6tsutil_24streaker_with_refs(CYTHON_UNUSED PyObject *_
         if (__pyx_t_12) {
         } else {
           __pyx_t_10 = __pyx_t_12;
-          goto __pyx_L15_bool_binop_done;
+          goto __pyx_L16_bool_binop_done;
         }
         __pyx_t_18 = __pyx_v_j;
         if (__pyx_t_18 < 0) __pyx_t_18 += __pyx_pybuffernd_prices.diminfo[0].shape;
         __pyx_t_12 = (((*__Pyx_BufPtrStrided1d(double *, __pyx_pybuffernd_prices.rcbuffer->pybuffer.buf, __pyx_t_18, __pyx_pybuffernd_prices.diminfo[0].strides)) <= __pyx_v_ref) != 0);
         __pyx_t_10 = __pyx_t_12;
-        __pyx_L15_bool_binop_done:;
+        __pyx_L16_bool_binop_done:;
         if (__pyx_t_10) {
 
           /* "streaker.pyx":87
@@ -9882,7 +9905,7 @@ static PyObject *__pyx_pf_6tsutil_24streaker_with_refs(CYTHON_UNUSED PyObject *_
  * 
  */
         }
-        __pyx_L12:;
+        __pyx_L13:;
 
         /* "streaker.pyx":82
  *         #now step FORWARD through to calculate the streaks
@@ -9947,7 +9970,7 @@ static PyObject *__pyx_pf_6tsutil_24streaker_with_refs(CYTHON_UNUSED PyObject *_
  * @cython.cdivision(True)
  * @cython.boundscheck(False)
  * def streaker_with_refs(np.ndarray[long,ndim=1] times, np.ndarray[double,ndim=1] prices,             # <<<<<<<<<<<<<<
- *     np.ndarray[long,ndim=1] volumes,np.ndarray[double,ndim=1] refs, long window_size):
+ *     np.ndarray[long,ndim=1] volumes,np.ndarray[double,ndim=1] refs, long window_size, long cap = 100):
  *     """
  */
 
@@ -12274,6 +12297,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_buckets, __pyx_k_buckets, sizeof(__pyx_k_buckets), 0, 0, 1, 1},
   {&__pyx_n_s_bucks, __pyx_k_bucks, sizeof(__pyx_k_bucks), 0, 0, 1, 1},
   {&__pyx_n_s_bz0, __pyx_k_bz0, sizeof(__pyx_k_bz0), 0, 0, 1, 1},
+  {&__pyx_n_s_cap, __pyx_k_cap, sizeof(__pyx_k_cap), 0, 0, 1, 1},
   {&__pyx_n_s_colnames, __pyx_k_colnames, sizeof(__pyx_k_colnames), 0, 0, 1, 1},
   {&__pyx_n_s_columns, __pyx_k_columns, sizeof(__pyx_k_columns), 0, 0, 1, 1},
   {&__pyx_n_s_current_time, __pyx_k_current_time, sizeof(__pyx_k_current_time), 0, 0, 1, 1},
@@ -12713,13 +12737,13 @@ static int __Pyx_InitCachedConstants(void) {
  * @cython.cdivision(True)
  * @cython.boundscheck(False)
  * def streaker_with_refs(np.ndarray[long,ndim=1] times, np.ndarray[double,ndim=1] prices,             # <<<<<<<<<<<<<<
- *     np.ndarray[long,ndim=1] volumes,np.ndarray[double,ndim=1] refs, long window_size):
+ *     np.ndarray[long,ndim=1] volumes,np.ndarray[double,ndim=1] refs, long window_size, long cap = 100):
  *     """
  */
-  __pyx_tuple__44 = PyTuple_Pack(16, __pyx_n_s_times, __pyx_n_s_prices, __pyx_n_s_volumes, __pyx_n_s_refs, __pyx_n_s_window_size, __pyx_n_s_t_len, __pyx_n_s_s_len, __pyx_n_s_i, __pyx_n_s_win_size, __pyx_n_s_t_diff, __pyx_n_s_j, __pyx_n_s_window_start, __pyx_n_s_tots_buys, __pyx_n_s_tots_sells, __pyx_n_s_ref, __pyx_n_s_res); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(5, 50, __pyx_L1_error)
+  __pyx_tuple__44 = PyTuple_Pack(17, __pyx_n_s_times, __pyx_n_s_prices, __pyx_n_s_volumes, __pyx_n_s_refs, __pyx_n_s_window_size, __pyx_n_s_cap, __pyx_n_s_t_len, __pyx_n_s_s_len, __pyx_n_s_i, __pyx_n_s_win_size, __pyx_n_s_t_diff, __pyx_n_s_j, __pyx_n_s_window_start, __pyx_n_s_tots_buys, __pyx_n_s_tots_sells, __pyx_n_s_ref, __pyx_n_s_res); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(5, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__44);
   __Pyx_GIVEREF(__pyx_tuple__44);
-  __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(5, 0, 16, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_jgreenwald_libs_tsutil_str, __pyx_n_s_streaker_with_refs, 50, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(5, 50, __pyx_L1_error)
+  __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(6, 0, 17, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_jgreenwald_libs_tsutil_str, __pyx_n_s_streaker_with_refs, 50, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(5, 50, __pyx_L1_error)
 
   /* "tsutil.pyx":32
  * @cython.cdivision(True)
@@ -13263,7 +13287,7 @@ PyMODINIT_FUNC PyInit_tsutil(void)
  * @cython.cdivision(True)
  * @cython.boundscheck(False)
  * def streaker_with_refs(np.ndarray[long,ndim=1] times, np.ndarray[double,ndim=1] prices,             # <<<<<<<<<<<<<<
- *     np.ndarray[long,ndim=1] volumes,np.ndarray[double,ndim=1] refs, long window_size):
+ *     np.ndarray[long,ndim=1] volumes,np.ndarray[double,ndim=1] refs, long window_size, long cap = 100):
  *     """
  */
   __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6tsutil_25streaker_with_refs, NULL, __pyx_n_s_tsutil); if (unlikely(!__pyx_t_1)) __PYX_ERR(5, 50, __pyx_L1_error)
