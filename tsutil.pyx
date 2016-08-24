@@ -24,7 +24,7 @@ include "tsreturns.pyx"
 include "ou.pyx"
 include "core.pyx"
 include "streaker.pyx"
-
+include "ticks.pyx"
 
 
 @cython.cdivision(True)
