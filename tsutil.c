@@ -1813,7 +1813,9 @@ static PyObject *__pyx_pf_6tsutil_34tickPrice(CYTHON_UNUSED PyObject *__pyx_self
 static PyObject *__pyx_pf_6tsutil_36tick_dirs(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_md, double __pyx_v_ts); /* proto */
 static PyObject *__pyx_pf_6tsutil_38ticks_to_next_ticks(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_ticks); /* proto */
 static PyObject *__pyx_pf_6tsutil_40ticks_to_prev_ticks(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_ticks); /* proto */
-static PyObject *__pyx_pf_6tsutil_42fix_times(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_df_times); /* proto */
+static PyObject *__pyx_pf_6tsutil_42nearby_streaker(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_md, PyArrayObject *__pyx_v_times, long __pyx_v_window_size, long __pyx_v_cap); /* proto */
+static PyObject *__pyx_pf_6tsutil_44nearby_wmid_changes(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_md, PyArrayObject *__pyx_v_times, long __pyx_v_window_size, long __pyx_v_cap); /* proto */
+static PyObject *__pyx_pf_6tsutil_46fix_times(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_df_times); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static __Pyx_CachedCFunction __pyx_umethod_PyDict_Type_keys = {0, &__pyx_n_s_keys, 0, 0, 0};
@@ -1890,6 +1892,8 @@ static PyObject *__pyx_tuple__54;
 static PyObject *__pyx_tuple__56;
 static PyObject *__pyx_tuple__58;
 static PyObject *__pyx_tuple__60;
+static PyObject *__pyx_tuple__62;
+static PyObject *__pyx_tuple__64;
 static PyObject *__pyx_codeobj__21;
 static PyObject *__pyx_codeobj__23;
 static PyObject *__pyx_codeobj__25;
@@ -1911,6 +1915,8 @@ static PyObject *__pyx_codeobj__55;
 static PyObject *__pyx_codeobj__57;
 static PyObject *__pyx_codeobj__59;
 static PyObject *__pyx_codeobj__61;
+static PyObject *__pyx_codeobj__63;
+static PyObject *__pyx_codeobj__65;
 
 /* "tsutil.pyx":7
  * 
@@ -14342,6 +14348,7 @@ static PyObject *__pyx_pf_6tsutil_40ticks_to_prev_ticks(CYTHON_UNUSED PyObject *
  *             last_tick = tick
  *         i = i+1             # <<<<<<<<<<<<<<
  *     return res
+ * 
  */
     __pyx_v_i = (__pyx_v_i + 1);
   }
@@ -14350,6 +14357,8 @@ static PyObject *__pyx_pf_6tsutil_40ticks_to_prev_ticks(CYTHON_UNUSED PyObject *
  *             last_tick = tick
  *         i = i+1
  *     return res             # <<<<<<<<<<<<<<
+ * 
+ * 
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)__pyx_v_res));
@@ -14391,22 +14400,94 @@ static PyObject *__pyx_pf_6tsutil_40ticks_to_prev_ticks(CYTHON_UNUSED PyObject *
   return __pyx_r;
 }
 
-/* "tsutil.pyx":32
+/* "ticks.pyx":82
  * @cython.cdivision(True)
  * @cython.boundscheck(False)
- * def fix_times(np.ndarray[long, ndim=1] df_times):             # <<<<<<<<<<<<<<
- *     return fix_timestamps(df_times)
+ * def nearby_streaker(np.ndarray[double,ndim=2] md, np.ndarray[long,ndim=1] times, long window_size, long cap = 100):             # <<<<<<<<<<<<<<
+ *     """
+ *     Times MUST be a unique list of timestamps as LONGS. Prices should be
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6tsutil_43fix_times(PyObject *__pyx_self, PyObject *__pyx_v_df_times); /*proto*/
-static PyMethodDef __pyx_mdef_6tsutil_43fix_times = {"fix_times", (PyCFunction)__pyx_pw_6tsutil_43fix_times, METH_O, 0};
-static PyObject *__pyx_pw_6tsutil_43fix_times(PyObject *__pyx_self, PyObject *__pyx_v_df_times) {
+static PyObject *__pyx_pw_6tsutil_43nearby_streaker(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_6tsutil_42nearby_streaker[] = "\n    Times MUST be a unique list of timestamps as LONGS. Prices should be \n    ZERO or NaN if no trade at that tick. Same is true for volumes. Window\n    size is in NANOSECONDS.\n    \n    bp0,bz0,ap0,az0,tp,tz,strike\n    ";
+static PyMethodDef __pyx_mdef_6tsutil_43nearby_streaker = {"nearby_streaker", (PyCFunction)__pyx_pw_6tsutil_43nearby_streaker, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6tsutil_42nearby_streaker};
+static PyObject *__pyx_pw_6tsutil_43nearby_streaker(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyArrayObject *__pyx_v_md = 0;
+  PyArrayObject *__pyx_v_times = 0;
+  long __pyx_v_window_size;
+  long __pyx_v_cap;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("fix_times (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_df_times), __pyx_ptype_5numpy_ndarray, 1, "df_times", 0))) __PYX_ERR(1, 32, __pyx_L1_error)
-  __pyx_r = __pyx_pf_6tsutil_42fix_times(__pyx_self, ((PyArrayObject *)__pyx_v_df_times));
+  __Pyx_RefNannySetupContext("nearby_streaker (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_md,&__pyx_n_s_times,&__pyx_n_s_window_size,&__pyx_n_s_cap,0};
+    PyObject* values[4] = {0,0,0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_md)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        case  1:
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_times)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("nearby_streaker", 0, 3, 4, 1); __PYX_ERR(6, 82, __pyx_L3_error)
+        }
+        case  2:
+        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_window_size)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("nearby_streaker", 0, 3, 4, 2); __PYX_ERR(6, 82, __pyx_L3_error)
+        }
+        case  3:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_cap);
+          if (value) { values[3] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "nearby_streaker") < 0)) __PYX_ERR(6, 82, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_md = ((PyArrayObject *)values[0]);
+    __pyx_v_times = ((PyArrayObject *)values[1]);
+    __pyx_v_window_size = __Pyx_PyInt_As_long(values[2]); if (unlikely((__pyx_v_window_size == (long)-1) && PyErr_Occurred())) __PYX_ERR(6, 82, __pyx_L3_error)
+    if (values[3]) {
+      __pyx_v_cap = __Pyx_PyInt_As_long(values[3]); if (unlikely((__pyx_v_cap == (long)-1) && PyErr_Occurred())) __PYX_ERR(6, 82, __pyx_L3_error)
+    } else {
+      __pyx_v_cap = ((long)0x64);
+    }
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("nearby_streaker", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(6, 82, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("tsutil.nearby_streaker", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_md), __pyx_ptype_5numpy_ndarray, 1, "md", 0))) __PYX_ERR(6, 82, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_times), __pyx_ptype_5numpy_ndarray, 1, "times", 0))) __PYX_ERR(6, 82, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6tsutil_42nearby_streaker(__pyx_self, __pyx_v_md, __pyx_v_times, __pyx_v_window_size, __pyx_v_cap);
 
   /* function exit code */
   goto __pyx_L0;
@@ -14417,7 +14498,2297 @@ static PyObject *__pyx_pw_6tsutil_43fix_times(PyObject *__pyx_self, PyObject *__
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6tsutil_42fix_times(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_df_times) {
+static PyObject *__pyx_pf_6tsutil_42nearby_streaker(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_md, PyArrayObject *__pyx_v_times, long __pyx_v_window_size, long __pyx_v_cap) {
+  long __pyx_v_t_len;
+  long __pyx_v_md_len;
+  long __pyx_v_i;
+  long __pyx_v_win_size;
+  long __pyx_v_j;
+  long __pyx_v_window_start;
+  double __pyx_v_this_strike;
+  double __pyx_v_strike_diff;
+  PyObject *__pyx_v_start_prices = 0;
+  PyObject *__pyx_v_buys = 0;
+  PyObject *__pyx_v_sells = 0;
+  PyArrayObject *__pyx_v_res = 0;
+  CYTHON_UNUSED PyObject *__pyx_v_buy_streaks = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_sell_streaks = NULL;
+  PyObject *__pyx_v_k = NULL;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_md;
+  __Pyx_Buffer __pyx_pybuffer_md;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_res;
+  __Pyx_Buffer __pyx_pybuffer_res;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_times;
+  __Pyx_Buffer __pyx_pybuffer_times;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyArrayObject *__pyx_t_6 = NULL;
+  long __pyx_t_7;
+  long __pyx_t_8;
+  Py_ssize_t __pyx_t_9;
+  Py_ssize_t __pyx_t_10;
+  Py_ssize_t __pyx_t_11;
+  int __pyx_t_12;
+  Py_ssize_t __pyx_t_13;
+  int __pyx_t_14;
+  Py_ssize_t __pyx_t_15;
+  Py_ssize_t __pyx_t_16;
+  Py_ssize_t __pyx_t_17;
+  Py_ssize_t __pyx_t_18;
+  Py_ssize_t __pyx_t_19;
+  Py_ssize_t __pyx_t_20;
+  Py_ssize_t __pyx_t_21;
+  Py_ssize_t __pyx_t_22;
+  Py_ssize_t __pyx_t_23;
+  Py_ssize_t __pyx_t_24;
+  Py_ssize_t __pyx_t_25;
+  Py_ssize_t __pyx_t_26;
+  Py_ssize_t __pyx_t_27;
+  Py_ssize_t __pyx_t_28;
+  int __pyx_t_29;
+  Py_ssize_t __pyx_t_30;
+  Py_ssize_t __pyx_t_31;
+  Py_ssize_t __pyx_t_32;
+  Py_ssize_t __pyx_t_33;
+  Py_ssize_t __pyx_t_34;
+  Py_ssize_t __pyx_t_35;
+  Py_ssize_t __pyx_t_36;
+  Py_ssize_t __pyx_t_37;
+  Py_ssize_t __pyx_t_38;
+  Py_ssize_t __pyx_t_39;
+  Py_ssize_t __pyx_t_40;
+  Py_ssize_t __pyx_t_41;
+  Py_ssize_t __pyx_t_42;
+  Py_ssize_t __pyx_t_43;
+  Py_ssize_t __pyx_t_44;
+  Py_ssize_t __pyx_t_45;
+  Py_ssize_t __pyx_t_46;
+  Py_ssize_t __pyx_t_47;
+  Py_ssize_t __pyx_t_48;
+  Py_ssize_t __pyx_t_49;
+  Py_ssize_t __pyx_t_50;
+  Py_ssize_t __pyx_t_51;
+  Py_ssize_t __pyx_t_52;
+  Py_ssize_t __pyx_t_53;
+  Py_ssize_t __pyx_t_54;
+  Py_ssize_t __pyx_t_55;
+  Py_ssize_t __pyx_t_56;
+  Py_ssize_t __pyx_t_57;
+  Py_ssize_t __pyx_t_58;
+  Py_ssize_t __pyx_t_59;
+  Py_ssize_t __pyx_t_60;
+  Py_ssize_t __pyx_t_61;
+  Py_ssize_t __pyx_t_62;
+  PyObject *(*__pyx_t_63)(PyObject *);
+  double __pyx_t_64;
+  Py_ssize_t __pyx_t_65;
+  Py_ssize_t __pyx_t_66;
+  Py_ssize_t __pyx_t_67;
+  Py_ssize_t __pyx_t_68;
+  Py_ssize_t __pyx_t_69;
+  Py_ssize_t __pyx_t_70;
+  Py_ssize_t __pyx_t_71;
+  Py_ssize_t __pyx_t_72;
+  Py_ssize_t __pyx_t_73;
+  Py_ssize_t __pyx_t_74;
+  Py_ssize_t __pyx_t_75;
+  Py_ssize_t __pyx_t_76;
+  Py_ssize_t __pyx_t_77;
+  Py_ssize_t __pyx_t_78;
+  Py_ssize_t __pyx_t_79;
+  Py_ssize_t __pyx_t_80;
+  Py_ssize_t __pyx_t_81;
+  Py_ssize_t __pyx_t_82;
+  Py_ssize_t __pyx_t_83;
+  Py_ssize_t __pyx_t_84;
+  __Pyx_RefNannySetupContext("nearby_streaker", 0);
+  __pyx_pybuffer_res.pybuffer.buf = NULL;
+  __pyx_pybuffer_res.refcount = 0;
+  __pyx_pybuffernd_res.data = NULL;
+  __pyx_pybuffernd_res.rcbuffer = &__pyx_pybuffer_res;
+  __pyx_pybuffer_md.pybuffer.buf = NULL;
+  __pyx_pybuffer_md.refcount = 0;
+  __pyx_pybuffernd_md.data = NULL;
+  __pyx_pybuffernd_md.rcbuffer = &__pyx_pybuffer_md;
+  __pyx_pybuffer_times.pybuffer.buf = NULL;
+  __pyx_pybuffer_times.refcount = 0;
+  __pyx_pybuffernd_times.data = NULL;
+  __pyx_pybuffernd_times.rcbuffer = &__pyx_pybuffer_times;
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_md.rcbuffer->pybuffer, (PyObject*)__pyx_v_md, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(6, 82, __pyx_L1_error)
+  }
+  __pyx_pybuffernd_md.diminfo[0].strides = __pyx_pybuffernd_md.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_md.diminfo[0].shape = __pyx_pybuffernd_md.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_md.diminfo[1].strides = __pyx_pybuffernd_md.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_md.diminfo[1].shape = __pyx_pybuffernd_md.rcbuffer->pybuffer.shape[1];
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_times.rcbuffer->pybuffer, (PyObject*)__pyx_v_times, &__Pyx_TypeInfo_long, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(6, 82, __pyx_L1_error)
+  }
+  __pyx_pybuffernd_times.diminfo[0].strides = __pyx_pybuffernd_times.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_times.diminfo[0].shape = __pyx_pybuffernd_times.rcbuffer->pybuffer.shape[0];
+
+  /* "ticks.pyx":91
+ *     """
+ *     cdef:
+ *         long t_len = times.shape[0]             # <<<<<<<<<<<<<<
+ *         long md_len = md.shape[0]
+ * 
+ */
+  __pyx_v_t_len = (__pyx_v_times->dimensions[0]);
+
+  /* "ticks.pyx":92
+ *     cdef:
+ *         long t_len = times.shape[0]
+ *         long md_len = md.shape[0]             # <<<<<<<<<<<<<<
+ * 
+ *         long i =0, win_size = window_size, t_diff, j, window_start
+ */
+  __pyx_v_md_len = (__pyx_v_md->dimensions[0]);
+
+  /* "ticks.pyx":94
+ *         long md_len = md.shape[0]
+ * 
+ *         long i =0, win_size = window_size, t_diff, j, window_start             # <<<<<<<<<<<<<<
+ *         double tots_buys,tots_sells,ref
+ * 
+ */
+  __pyx_v_i = 0;
+  __pyx_v_win_size = __pyx_v_window_size;
+
+  /* "ticks.pyx":98
+ * 
+ *         double this_strike, strike_diff
+ *         dict start_prices = {}             # <<<<<<<<<<<<<<
+ *         dict buys = {}
+ *         dict sells = {}
+ */
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 98, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_start_prices = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "ticks.pyx":99
+ *         double this_strike, strike_diff
+ *         dict start_prices = {}
+ *         dict buys = {}             # <<<<<<<<<<<<<<
+ *         dict sells = {}
+ *         np.ndarray[double, ndim=2] res = np.zeros((md_len,10), dtype=np.double)
+ */
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 99, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_buys = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "ticks.pyx":100
+ *         dict start_prices = {}
+ *         dict buys = {}
+ *         dict sells = {}             # <<<<<<<<<<<<<<
+ *         np.ndarray[double, ndim=2] res = np.zeros((md_len,10), dtype=np.double)
+ * 
+ */
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 100, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_sells = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "ticks.pyx":101
+ *         dict buys = {}
+ *         dict sells = {}
+ *         np.ndarray[double, ndim=2] res = np.zeros((md_len,10), dtype=np.double)             # <<<<<<<<<<<<<<
+ * 
+ *     assert(t_len==md_len)
+ */
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_md_len); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
+  __Pyx_INCREF(__pyx_int_10);
+  __Pyx_GIVEREF(__pyx_int_10);
+  PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_int_10);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_3);
+  __pyx_t_3 = 0;
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_double); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(6, 101, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(6, 101, __pyx_L1_error)
+  __pyx_t_6 = ((PyArrayObject *)__pyx_t_5);
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_res.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
+      __pyx_v_res = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_res.rcbuffer->pybuffer.buf = NULL;
+      __PYX_ERR(6, 101, __pyx_L1_error)
+    } else {__pyx_pybuffernd_res.diminfo[0].strides = __pyx_pybuffernd_res.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_res.diminfo[0].shape = __pyx_pybuffernd_res.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_res.diminfo[1].strides = __pyx_pybuffernd_res.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_res.diminfo[1].shape = __pyx_pybuffernd_res.rcbuffer->pybuffer.shape[1];
+    }
+  }
+  __pyx_t_6 = 0;
+  __pyx_v_res = ((PyArrayObject *)__pyx_t_5);
+  __pyx_t_5 = 0;
+
+  /* "ticks.pyx":103
+ *         np.ndarray[double, ndim=2] res = np.zeros((md_len,10), dtype=np.double)
+ * 
+ *     assert(t_len==md_len)             # <<<<<<<<<<<<<<
+ *     buy_streaks = [{}]
+ *     sell_streaks = [{}]
+ */
+  #ifndef CYTHON_WITHOUT_ASSERTIONS
+  if (unlikely(!Py_OptimizeFlag)) {
+    if (unlikely(!((__pyx_v_t_len == __pyx_v_md_len) != 0))) {
+      PyErr_SetNone(PyExc_AssertionError);
+      __PYX_ERR(6, 103, __pyx_L1_error)
+    }
+  }
+  #endif
+
+  /* "ticks.pyx":104
+ * 
+ *     assert(t_len==md_len)
+ *     buy_streaks = [{}]             # <<<<<<<<<<<<<<
+ *     sell_streaks = [{}]
+ * 
+ */
+  __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 104, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 104, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyList_SET_ITEM(__pyx_t_3, 0, __pyx_t_5);
+  __pyx_t_5 = 0;
+  __pyx_v_buy_streaks = ((PyObject*)__pyx_t_3);
+  __pyx_t_3 = 0;
+
+  /* "ticks.pyx":105
+ *     assert(t_len==md_len)
+ *     buy_streaks = [{}]
+ *     sell_streaks = [{}]             # <<<<<<<<<<<<<<
+ * 
+ *     for i in range(1,t_len):
+ */
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 105, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_5 = PyList_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 105, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_3);
+  PyList_SET_ITEM(__pyx_t_5, 0, __pyx_t_3);
+  __pyx_t_3 = 0;
+  __pyx_v_sell_streaks = ((PyObject*)__pyx_t_5);
+  __pyx_t_5 = 0;
+
+  /* "ticks.pyx":107
+ *     sell_streaks = [{}]
+ * 
+ *     for i in range(1,t_len):             # <<<<<<<<<<<<<<
+ *         window_start = times[i] - win_size
+ *         j = i
+ */
+  __pyx_t_7 = __pyx_v_t_len;
+  for (__pyx_t_8 = 1; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
+    __pyx_v_i = __pyx_t_8;
+
+    /* "ticks.pyx":108
+ * 
+ *     for i in range(1,t_len):
+ *         window_start = times[i] - win_size             # <<<<<<<<<<<<<<
+ *         j = i
+ *         this_strike = md[i,6]
+ */
+    __pyx_t_9 = __pyx_v_i;
+    if (__pyx_t_9 < 0) __pyx_t_9 += __pyx_pybuffernd_times.diminfo[0].shape;
+    __pyx_v_window_start = ((*__Pyx_BufPtrStrided1d(long *, __pyx_pybuffernd_times.rcbuffer->pybuffer.buf, __pyx_t_9, __pyx_pybuffernd_times.diminfo[0].strides)) - __pyx_v_win_size);
+
+    /* "ticks.pyx":109
+ *     for i in range(1,t_len):
+ *         window_start = times[i] - win_size
+ *         j = i             # <<<<<<<<<<<<<<
+ *         this_strike = md[i,6]
+ * 
+ */
+    __pyx_v_j = __pyx_v_i;
+
+    /* "ticks.pyx":110
+ *         window_start = times[i] - win_size
+ *         j = i
+ *         this_strike = md[i,6]             # <<<<<<<<<<<<<<
+ * 
+ *         start_prices = {}
+ */
+    __pyx_t_10 = __pyx_v_i;
+    __pyx_t_11 = 6;
+    if (__pyx_t_10 < 0) __pyx_t_10 += __pyx_pybuffernd_md.diminfo[0].shape;
+    if (__pyx_t_11 < 0) __pyx_t_11 += __pyx_pybuffernd_md.diminfo[1].shape;
+    __pyx_v_this_strike = (*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_10, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_11, __pyx_pybuffernd_md.diminfo[1].strides));
+
+    /* "ticks.pyx":112
+ *         this_strike = md[i,6]
+ * 
+ *         start_prices = {}             # <<<<<<<<<<<<<<
+ *         buys = {}
+ *         sells = {}
+ */
+    __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 112, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF_SET(__pyx_v_start_prices, ((PyObject*)__pyx_t_5));
+    __pyx_t_5 = 0;
+
+    /* "ticks.pyx":113
+ * 
+ *         start_prices = {}
+ *         buys = {}             # <<<<<<<<<<<<<<
+ *         sells = {}
+ *         #climb back to find the start of the window
+ */
+    __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 113, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF_SET(__pyx_v_buys, ((PyObject*)__pyx_t_5));
+    __pyx_t_5 = 0;
+
+    /* "ticks.pyx":114
+ *         start_prices = {}
+ *         buys = {}
+ *         sells = {}             # <<<<<<<<<<<<<<
+ *         #climb back to find the start of the window
+ *         while times[j]>= window_start and j>=0 and j >= (i-cap):
+ */
+    __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 114, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF_SET(__pyx_v_sells, ((PyObject*)__pyx_t_5));
+    __pyx_t_5 = 0;
+
+    /* "ticks.pyx":116
+ *         sells = {}
+ *         #climb back to find the start of the window
+ *         while times[j]>= window_start and j>=0 and j >= (i-cap):             # <<<<<<<<<<<<<<
+ *             start_prices[md[j,6]] = kwmid(md[j,0],md[j,1],md[j,2],md[j,3],.01)
+ *             j-=1
+ */
+    while (1) {
+      __pyx_t_13 = __pyx_v_j;
+      if (__pyx_t_13 < 0) __pyx_t_13 += __pyx_pybuffernd_times.diminfo[0].shape;
+      __pyx_t_14 = (((*__Pyx_BufPtrStrided1d(long *, __pyx_pybuffernd_times.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_times.diminfo[0].strides)) >= __pyx_v_window_start) != 0);
+      if (__pyx_t_14) {
+      } else {
+        __pyx_t_12 = __pyx_t_14;
+        goto __pyx_L7_bool_binop_done;
+      }
+      __pyx_t_14 = ((__pyx_v_j >= 0) != 0);
+      if (__pyx_t_14) {
+      } else {
+        __pyx_t_12 = __pyx_t_14;
+        goto __pyx_L7_bool_binop_done;
+      }
+      __pyx_t_14 = ((__pyx_v_j >= (__pyx_v_i - __pyx_v_cap)) != 0);
+      __pyx_t_12 = __pyx_t_14;
+      __pyx_L7_bool_binop_done:;
+      if (!__pyx_t_12) break;
+
+      /* "ticks.pyx":117
+ *         #climb back to find the start of the window
+ *         while times[j]>= window_start and j>=0 and j >= (i-cap):
+ *             start_prices[md[j,6]] = kwmid(md[j,0],md[j,1],md[j,2],md[j,3],.01)             # <<<<<<<<<<<<<<
+ *             j-=1
+ * 
+ */
+      __pyx_t_15 = __pyx_v_j;
+      __pyx_t_16 = 0;
+      if (__pyx_t_15 < 0) __pyx_t_15 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_16 < 0) __pyx_t_16 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_17 = __pyx_v_j;
+      __pyx_t_18 = 1;
+      if (__pyx_t_17 < 0) __pyx_t_17 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_18 < 0) __pyx_t_18 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_19 = __pyx_v_j;
+      __pyx_t_20 = 2;
+      if (__pyx_t_19 < 0) __pyx_t_19 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_20 < 0) __pyx_t_20 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_21 = __pyx_v_j;
+      __pyx_t_22 = 3;
+      if (__pyx_t_21 < 0) __pyx_t_21 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_22 < 0) __pyx_t_22 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_5 = PyFloat_FromDouble(__pyx_f_6tsutil_kwmid((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_15, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_16, __pyx_pybuffernd_md.diminfo[1].strides)), (*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_18, __pyx_pybuffernd_md.diminfo[1].strides)), (*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_19, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_20, __pyx_pybuffernd_md.diminfo[1].strides)), (*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_21, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_22, __pyx_pybuffernd_md.diminfo[1].strides)), .01, 0)); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 117, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_23 = __pyx_v_j;
+      __pyx_t_24 = 6;
+      if (__pyx_t_23 < 0) __pyx_t_23 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_24 < 0) __pyx_t_24 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_3 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_24, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 117, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      if (unlikely(PyDict_SetItem(__pyx_v_start_prices, __pyx_t_3, __pyx_t_5) < 0)) __PYX_ERR(6, 117, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+
+      /* "ticks.pyx":118
+ *         while times[j]>= window_start and j>=0 and j >= (i-cap):
+ *             start_prices[md[j,6]] = kwmid(md[j,0],md[j,1],md[j,2],md[j,3],.01)
+ *             j-=1             # <<<<<<<<<<<<<<
+ * 
+ *         #now we've got starting mid price of all products (assuming they were in the window)
+ */
+      __pyx_v_j = (__pyx_v_j - 1);
+    }
+
+    /* "ticks.pyx":121
+ * 
+ *         #now we've got starting mid price of all products (assuming they were in the window)
+ *         j+=1             # <<<<<<<<<<<<<<
+ * 
+ *         #now step FORWARD through to calculate the streaks
+ */
+    __pyx_v_j = (__pyx_v_j + 1);
+
+    /* "ticks.pyx":124
+ * 
+ *         #now step FORWARD through to calculate the streaks
+ *         while j<=i:             # <<<<<<<<<<<<<<
+ *             if md[j,4] > 0 and start_prices.has_key(md[j,6]): #it's a trade
+ *                 if md[j,5]>0 and md[j,4]>=start_prices[md[j,6]]: #it's a buy at or above ref
+ */
+    while (1) {
+      __pyx_t_12 = ((__pyx_v_j <= __pyx_v_i) != 0);
+      if (!__pyx_t_12) break;
+
+      /* "ticks.pyx":125
+ *         #now step FORWARD through to calculate the streaks
+ *         while j<=i:
+ *             if md[j,4] > 0 and start_prices.has_key(md[j,6]): #it's a trade             # <<<<<<<<<<<<<<
+ *                 if md[j,5]>0 and md[j,4]>=start_prices[md[j,6]]: #it's a buy at or above ref
+ *                     if buys.has_key(md[j,6]):
+ */
+      __pyx_t_25 = __pyx_v_j;
+      __pyx_t_26 = 4;
+      if (__pyx_t_25 < 0) __pyx_t_25 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_26 < 0) __pyx_t_26 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_14 = (((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_25, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_26, __pyx_pybuffernd_md.diminfo[1].strides)) > 0.0) != 0);
+      if (__pyx_t_14) {
+      } else {
+        __pyx_t_12 = __pyx_t_14;
+        goto __pyx_L13_bool_binop_done;
+      }
+      __pyx_t_27 = __pyx_v_j;
+      __pyx_t_28 = 6;
+      if (__pyx_t_27 < 0) __pyx_t_27 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_28 < 0) __pyx_t_28 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_5 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_28, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 125, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_14 = PyDict_Contains(__pyx_v_start_prices, __pyx_t_5); if (unlikely(__pyx_t_14 == -1)) __PYX_ERR(6, 125, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_t_29 = (__pyx_t_14 != 0);
+      __pyx_t_12 = __pyx_t_29;
+      __pyx_L13_bool_binop_done:;
+      if (__pyx_t_12) {
+
+        /* "ticks.pyx":126
+ *         while j<=i:
+ *             if md[j,4] > 0 and start_prices.has_key(md[j,6]): #it's a trade
+ *                 if md[j,5]>0 and md[j,4]>=start_prices[md[j,6]]: #it's a buy at or above ref             # <<<<<<<<<<<<<<
+ *                     if buys.has_key(md[j,6]):
+ *                         buys[md[j,6]] += md[j,5]
+ */
+        __pyx_t_30 = __pyx_v_j;
+        __pyx_t_31 = 5;
+        if (__pyx_t_30 < 0) __pyx_t_30 += __pyx_pybuffernd_md.diminfo[0].shape;
+        if (__pyx_t_31 < 0) __pyx_t_31 += __pyx_pybuffernd_md.diminfo[1].shape;
+        __pyx_t_29 = (((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_30, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_31, __pyx_pybuffernd_md.diminfo[1].strides)) > 0.0) != 0);
+        if (__pyx_t_29) {
+        } else {
+          __pyx_t_12 = __pyx_t_29;
+          goto __pyx_L16_bool_binop_done;
+        }
+        __pyx_t_32 = __pyx_v_j;
+        __pyx_t_33 = 4;
+        if (__pyx_t_32 < 0) __pyx_t_32 += __pyx_pybuffernd_md.diminfo[0].shape;
+        if (__pyx_t_33 < 0) __pyx_t_33 += __pyx_pybuffernd_md.diminfo[1].shape;
+        __pyx_t_5 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_32, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_33, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 126, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_5);
+        __pyx_t_34 = __pyx_v_j;
+        __pyx_t_35 = 6;
+        if (__pyx_t_34 < 0) __pyx_t_34 += __pyx_pybuffernd_md.diminfo[0].shape;
+        if (__pyx_t_35 < 0) __pyx_t_35 += __pyx_pybuffernd_md.diminfo[1].shape;
+        __pyx_t_3 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_34, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_35, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 126, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_start_prices, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 126, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_t_3 = PyObject_RichCompare(__pyx_t_5, __pyx_t_1, Py_GE); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 126, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __pyx_t_29 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_29 < 0)) __PYX_ERR(6, 126, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_t_12 = __pyx_t_29;
+        __pyx_L16_bool_binop_done:;
+        if (__pyx_t_12) {
+
+          /* "ticks.pyx":127
+ *             if md[j,4] > 0 and start_prices.has_key(md[j,6]): #it's a trade
+ *                 if md[j,5]>0 and md[j,4]>=start_prices[md[j,6]]: #it's a buy at or above ref
+ *                     if buys.has_key(md[j,6]):             # <<<<<<<<<<<<<<
+ *                         buys[md[j,6]] += md[j,5]
+ *                     else:
+ */
+          __pyx_t_36 = __pyx_v_j;
+          __pyx_t_37 = 6;
+          if (__pyx_t_36 < 0) __pyx_t_36 += __pyx_pybuffernd_md.diminfo[0].shape;
+          if (__pyx_t_37 < 0) __pyx_t_37 += __pyx_pybuffernd_md.diminfo[1].shape;
+          __pyx_t_3 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_36, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_37, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 127, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_3);
+          __pyx_t_12 = PyDict_Contains(__pyx_v_buys, __pyx_t_3); if (unlikely(__pyx_t_12 == -1)) __PYX_ERR(6, 127, __pyx_L1_error)
+          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+          __pyx_t_29 = (__pyx_t_12 != 0);
+          if (__pyx_t_29) {
+
+            /* "ticks.pyx":128
+ *                 if md[j,5]>0 and md[j,4]>=start_prices[md[j,6]]: #it's a buy at or above ref
+ *                     if buys.has_key(md[j,6]):
+ *                         buys[md[j,6]] += md[j,5]             # <<<<<<<<<<<<<<
+ *                     else:
+ *                         buys[md[j,6]] = md[j,5]
+ */
+            __pyx_t_38 = __pyx_v_j;
+            __pyx_t_39 = 6;
+            if (__pyx_t_38 < 0) __pyx_t_38 += __pyx_pybuffernd_md.diminfo[0].shape;
+            if (__pyx_t_39 < 0) __pyx_t_39 += __pyx_pybuffernd_md.diminfo[1].shape;
+            __pyx_t_3 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_38, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_39, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 128, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_3);
+            __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_buys, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 128, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_1);
+            __pyx_t_40 = __pyx_v_j;
+            __pyx_t_41 = 5;
+            if (__pyx_t_40 < 0) __pyx_t_40 += __pyx_pybuffernd_md.diminfo[0].shape;
+            if (__pyx_t_41 < 0) __pyx_t_41 += __pyx_pybuffernd_md.diminfo[1].shape;
+            __pyx_t_5 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_40, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_41, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 128, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_5);
+            __pyx_t_2 = PyNumber_InPlaceAdd(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 128, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_2);
+            __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+            __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+            if (unlikely(PyDict_SetItem(__pyx_v_buys, __pyx_t_3, __pyx_t_2) < 0)) __PYX_ERR(6, 128, __pyx_L1_error)
+            __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+            __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+            /* "ticks.pyx":127
+ *             if md[j,4] > 0 and start_prices.has_key(md[j,6]): #it's a trade
+ *                 if md[j,5]>0 and md[j,4]>=start_prices[md[j,6]]: #it's a buy at or above ref
+ *                     if buys.has_key(md[j,6]):             # <<<<<<<<<<<<<<
+ *                         buys[md[j,6]] += md[j,5]
+ *                     else:
+ */
+            goto __pyx_L18;
+          }
+
+          /* "ticks.pyx":130
+ *                         buys[md[j,6]] += md[j,5]
+ *                     else:
+ *                         buys[md[j,6]] = md[j,5]             # <<<<<<<<<<<<<<
+ *                 elif md[j,5]>0 and md[j,4]<=start_prices[md[j,6]]: #it's a sell at or below ref
+ *                     if sells.has_key(md[j,6]):
+ */
+          /*else*/ {
+            __pyx_t_42 = __pyx_v_j;
+            __pyx_t_43 = 5;
+            if (__pyx_t_42 < 0) __pyx_t_42 += __pyx_pybuffernd_md.diminfo[0].shape;
+            if (__pyx_t_43 < 0) __pyx_t_43 += __pyx_pybuffernd_md.diminfo[1].shape;
+            __pyx_t_3 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_42, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_43, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 130, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_3);
+            __pyx_t_44 = __pyx_v_j;
+            __pyx_t_45 = 6;
+            if (__pyx_t_44 < 0) __pyx_t_44 += __pyx_pybuffernd_md.diminfo[0].shape;
+            if (__pyx_t_45 < 0) __pyx_t_45 += __pyx_pybuffernd_md.diminfo[1].shape;
+            __pyx_t_2 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_44, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_45, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 130, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_2);
+            if (unlikely(PyDict_SetItem(__pyx_v_buys, __pyx_t_2, __pyx_t_3) < 0)) __PYX_ERR(6, 130, __pyx_L1_error)
+            __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+            __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+          }
+          __pyx_L18:;
+
+          /* "ticks.pyx":126
+ *         while j<=i:
+ *             if md[j,4] > 0 and start_prices.has_key(md[j,6]): #it's a trade
+ *                 if md[j,5]>0 and md[j,4]>=start_prices[md[j,6]]: #it's a buy at or above ref             # <<<<<<<<<<<<<<
+ *                     if buys.has_key(md[j,6]):
+ *                         buys[md[j,6]] += md[j,5]
+ */
+          goto __pyx_L15;
+        }
+
+        /* "ticks.pyx":131
+ *                     else:
+ *                         buys[md[j,6]] = md[j,5]
+ *                 elif md[j,5]>0 and md[j,4]<=start_prices[md[j,6]]: #it's a sell at or below ref             # <<<<<<<<<<<<<<
+ *                     if sells.has_key(md[j,6]):
+ *                         sells[md[j,6]] += md[j,5]
+ */
+        __pyx_t_46 = __pyx_v_j;
+        __pyx_t_47 = 5;
+        if (__pyx_t_46 < 0) __pyx_t_46 += __pyx_pybuffernd_md.diminfo[0].shape;
+        if (__pyx_t_47 < 0) __pyx_t_47 += __pyx_pybuffernd_md.diminfo[1].shape;
+        __pyx_t_12 = (((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_46, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_47, __pyx_pybuffernd_md.diminfo[1].strides)) > 0.0) != 0);
+        if (__pyx_t_12) {
+        } else {
+          __pyx_t_29 = __pyx_t_12;
+          goto __pyx_L19_bool_binop_done;
+        }
+        __pyx_t_48 = __pyx_v_j;
+        __pyx_t_49 = 4;
+        if (__pyx_t_48 < 0) __pyx_t_48 += __pyx_pybuffernd_md.diminfo[0].shape;
+        if (__pyx_t_49 < 0) __pyx_t_49 += __pyx_pybuffernd_md.diminfo[1].shape;
+        __pyx_t_3 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_48, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_49, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 131, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __pyx_t_50 = __pyx_v_j;
+        __pyx_t_51 = 6;
+        if (__pyx_t_50 < 0) __pyx_t_50 += __pyx_pybuffernd_md.diminfo[0].shape;
+        if (__pyx_t_51 < 0) __pyx_t_51 += __pyx_pybuffernd_md.diminfo[1].shape;
+        __pyx_t_2 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_50, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_51, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 131, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_5 = __Pyx_PyDict_GetItem(__pyx_v_start_prices, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 131, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_5);
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_2 = PyObject_RichCompare(__pyx_t_3, __pyx_t_5, Py_LE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 131, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __pyx_t_12 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(6, 131, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_29 = __pyx_t_12;
+        __pyx_L19_bool_binop_done:;
+        if (__pyx_t_29) {
+
+          /* "ticks.pyx":132
+ *                         buys[md[j,6]] = md[j,5]
+ *                 elif md[j,5]>0 and md[j,4]<=start_prices[md[j,6]]: #it's a sell at or below ref
+ *                     if sells.has_key(md[j,6]):             # <<<<<<<<<<<<<<
+ *                         sells[md[j,6]] += md[j,5]
+ *                     else:
+ */
+          __pyx_t_52 = __pyx_v_j;
+          __pyx_t_53 = 6;
+          if (__pyx_t_52 < 0) __pyx_t_52 += __pyx_pybuffernd_md.diminfo[0].shape;
+          if (__pyx_t_53 < 0) __pyx_t_53 += __pyx_pybuffernd_md.diminfo[1].shape;
+          __pyx_t_2 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_52, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_53, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 132, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_2);
+          __pyx_t_29 = PyDict_Contains(__pyx_v_sells, __pyx_t_2); if (unlikely(__pyx_t_29 == -1)) __PYX_ERR(6, 132, __pyx_L1_error)
+          __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+          __pyx_t_12 = (__pyx_t_29 != 0);
+          if (__pyx_t_12) {
+
+            /* "ticks.pyx":133
+ *                 elif md[j,5]>0 and md[j,4]<=start_prices[md[j,6]]: #it's a sell at or below ref
+ *                     if sells.has_key(md[j,6]):
+ *                         sells[md[j,6]] += md[j,5]             # <<<<<<<<<<<<<<
+ *                     else:
+ *                         sells[md[j,6]] = md[j,5]
+ */
+            __pyx_t_54 = __pyx_v_j;
+            __pyx_t_55 = 6;
+            if (__pyx_t_54 < 0) __pyx_t_54 += __pyx_pybuffernd_md.diminfo[0].shape;
+            if (__pyx_t_55 < 0) __pyx_t_55 += __pyx_pybuffernd_md.diminfo[1].shape;
+            __pyx_t_2 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_54, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_55, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 133, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_2);
+            __pyx_t_5 = __Pyx_PyDict_GetItem(__pyx_v_sells, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 133, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_5);
+            __pyx_t_56 = __pyx_v_j;
+            __pyx_t_57 = 5;
+            if (__pyx_t_56 < 0) __pyx_t_56 += __pyx_pybuffernd_md.diminfo[0].shape;
+            if (__pyx_t_57 < 0) __pyx_t_57 += __pyx_pybuffernd_md.diminfo[1].shape;
+            __pyx_t_3 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_56, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_57, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 133, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_3);
+            __pyx_t_1 = PyNumber_InPlaceAdd(__pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 133, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_1);
+            __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+            __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+            if (unlikely(PyDict_SetItem(__pyx_v_sells, __pyx_t_2, __pyx_t_1) < 0)) __PYX_ERR(6, 133, __pyx_L1_error)
+            __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+            __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+            /* "ticks.pyx":132
+ *                         buys[md[j,6]] = md[j,5]
+ *                 elif md[j,5]>0 and md[j,4]<=start_prices[md[j,6]]: #it's a sell at or below ref
+ *                     if sells.has_key(md[j,6]):             # <<<<<<<<<<<<<<
+ *                         sells[md[j,6]] += md[j,5]
+ *                     else:
+ */
+            goto __pyx_L21;
+          }
+
+          /* "ticks.pyx":135
+ *                         sells[md[j,6]] += md[j,5]
+ *                     else:
+ *                         sells[md[j,6]] = md[j,5]             # <<<<<<<<<<<<<<
+ * 
+ *             j+=1
+ */
+          /*else*/ {
+            __pyx_t_58 = __pyx_v_j;
+            __pyx_t_59 = 5;
+            if (__pyx_t_58 < 0) __pyx_t_58 += __pyx_pybuffernd_md.diminfo[0].shape;
+            if (__pyx_t_59 < 0) __pyx_t_59 += __pyx_pybuffernd_md.diminfo[1].shape;
+            __pyx_t_2 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_58, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_59, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 135, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_2);
+            __pyx_t_60 = __pyx_v_j;
+            __pyx_t_61 = 6;
+            if (__pyx_t_60 < 0) __pyx_t_60 += __pyx_pybuffernd_md.diminfo[0].shape;
+            if (__pyx_t_61 < 0) __pyx_t_61 += __pyx_pybuffernd_md.diminfo[1].shape;
+            __pyx_t_1 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_60, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_61, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 135, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_1);
+            if (unlikely(PyDict_SetItem(__pyx_v_sells, __pyx_t_1, __pyx_t_2) < 0)) __PYX_ERR(6, 135, __pyx_L1_error)
+            __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+            __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+          }
+          __pyx_L21:;
+
+          /* "ticks.pyx":131
+ *                     else:
+ *                         buys[md[j,6]] = md[j,5]
+ *                 elif md[j,5]>0 and md[j,4]<=start_prices[md[j,6]]: #it's a sell at or below ref             # <<<<<<<<<<<<<<
+ *                     if sells.has_key(md[j,6]):
+ *                         sells[md[j,6]] += md[j,5]
+ */
+        }
+        __pyx_L15:;
+
+        /* "ticks.pyx":125
+ *         #now step FORWARD through to calculate the streaks
+ *         while j<=i:
+ *             if md[j,4] > 0 and start_prices.has_key(md[j,6]): #it's a trade             # <<<<<<<<<<<<<<
+ *                 if md[j,5]>0 and md[j,4]>=start_prices[md[j,6]]: #it's a buy at or above ref
+ *                     if buys.has_key(md[j,6]):
+ */
+      }
+
+      /* "ticks.pyx":137
+ *                         sells[md[j,6]] = md[j,5]
+ * 
+ *             j+=1             # <<<<<<<<<<<<<<
+ * 
+ *         for k in buys.keys():
+ */
+      __pyx_v_j = (__pyx_v_j + 1);
+    }
+
+    /* "ticks.pyx":139
+ *             j+=1
+ * 
+ *         for k in buys.keys():             # <<<<<<<<<<<<<<
+ *             strike_diff = this_strike - k
+ *             if (strike_diff == 5):
+ */
+    __pyx_t_2 = __Pyx_PyDict_Keys(__pyx_v_buys); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 139, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
+      __pyx_t_1 = __pyx_t_2; __Pyx_INCREF(__pyx_t_1); __pyx_t_62 = 0;
+      __pyx_t_63 = NULL;
+    } else {
+      __pyx_t_62 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 139, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_63 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_63)) __PYX_ERR(6, 139, __pyx_L1_error)
+    }
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    for (;;) {
+      if (likely(!__pyx_t_63)) {
+        if (likely(PyList_CheckExact(__pyx_t_1))) {
+          if (__pyx_t_62 >= PyList_GET_SIZE(__pyx_t_1)) break;
+          #if CYTHON_COMPILING_IN_CPYTHON
+          __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_62); __Pyx_INCREF(__pyx_t_2); __pyx_t_62++; if (unlikely(0 < 0)) __PYX_ERR(6, 139, __pyx_L1_error)
+          #else
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_62); __pyx_t_62++; if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 139, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_2);
+          #endif
+        } else {
+          if (__pyx_t_62 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
+          #if CYTHON_COMPILING_IN_CPYTHON
+          __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_62); __Pyx_INCREF(__pyx_t_2); __pyx_t_62++; if (unlikely(0 < 0)) __PYX_ERR(6, 139, __pyx_L1_error)
+          #else
+          __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_62); __pyx_t_62++; if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 139, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_2);
+          #endif
+        }
+      } else {
+        __pyx_t_2 = __pyx_t_63(__pyx_t_1);
+        if (unlikely(!__pyx_t_2)) {
+          PyObject* exc_type = PyErr_Occurred();
+          if (exc_type) {
+            if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+            else __PYX_ERR(6, 139, __pyx_L1_error)
+          }
+          break;
+        }
+        __Pyx_GOTREF(__pyx_t_2);
+      }
+      __Pyx_XDECREF_SET(__pyx_v_k, __pyx_t_2);
+      __pyx_t_2 = 0;
+
+      /* "ticks.pyx":140
+ * 
+ *         for k in buys.keys():
+ *             strike_diff = this_strike - k             # <<<<<<<<<<<<<<
+ *             if (strike_diff == 5):
+ *                 res[i,4] = buys[k]
+ */
+      __pyx_t_2 = PyFloat_FromDouble(__pyx_v_this_strike); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 140, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __pyx_t_3 = PyNumber_Subtract(__pyx_t_2, __pyx_v_k); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 140, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_t_64 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_64 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 140, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_v_strike_diff = __pyx_t_64;
+
+      /* "ticks.pyx":141
+ *         for k in buys.keys():
+ *             strike_diff = this_strike - k
+ *             if (strike_diff == 5):             # <<<<<<<<<<<<<<
+ *                 res[i,4] = buys[k]
+ *             if (strike_diff == 2.5):
+ */
+      __pyx_t_12 = ((__pyx_v_strike_diff == 5.0) != 0);
+      if (__pyx_t_12) {
+
+        /* "ticks.pyx":142
+ *             strike_diff = this_strike - k
+ *             if (strike_diff == 5):
+ *                 res[i,4] = buys[k]             # <<<<<<<<<<<<<<
+ *             if (strike_diff == 2.5):
+ *                  res[i,3] = buys[k]
+ */
+        __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_buys, __pyx_v_k); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 142, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __pyx_t_64 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_64 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 142, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_t_65 = __pyx_v_i;
+        __pyx_t_66 = 4;
+        if (__pyx_t_65 < 0) __pyx_t_65 += __pyx_pybuffernd_res.diminfo[0].shape;
+        if (__pyx_t_66 < 0) __pyx_t_66 += __pyx_pybuffernd_res.diminfo[1].shape;
+        *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_res.rcbuffer->pybuffer.buf, __pyx_t_65, __pyx_pybuffernd_res.diminfo[0].strides, __pyx_t_66, __pyx_pybuffernd_res.diminfo[1].strides) = __pyx_t_64;
+
+        /* "ticks.pyx":141
+ *         for k in buys.keys():
+ *             strike_diff = this_strike - k
+ *             if (strike_diff == 5):             # <<<<<<<<<<<<<<
+ *                 res[i,4] = buys[k]
+ *             if (strike_diff == 2.5):
+ */
+      }
+
+      /* "ticks.pyx":143
+ *             if (strike_diff == 5):
+ *                 res[i,4] = buys[k]
+ *             if (strike_diff == 2.5):             # <<<<<<<<<<<<<<
+ *                  res[i,3] = buys[k]
+ *             if (strike_diff == 0):
+ */
+      __pyx_t_12 = ((__pyx_v_strike_diff == 2.5) != 0);
+      if (__pyx_t_12) {
+
+        /* "ticks.pyx":144
+ *                 res[i,4] = buys[k]
+ *             if (strike_diff == 2.5):
+ *                  res[i,3] = buys[k]             # <<<<<<<<<<<<<<
+ *             if (strike_diff == 0):
+ *                  res[i,2] = buys[k]
+ */
+        __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_buys, __pyx_v_k); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 144, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __pyx_t_64 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_64 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 144, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_t_67 = __pyx_v_i;
+        __pyx_t_68 = 3;
+        if (__pyx_t_67 < 0) __pyx_t_67 += __pyx_pybuffernd_res.diminfo[0].shape;
+        if (__pyx_t_68 < 0) __pyx_t_68 += __pyx_pybuffernd_res.diminfo[1].shape;
+        *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_res.rcbuffer->pybuffer.buf, __pyx_t_67, __pyx_pybuffernd_res.diminfo[0].strides, __pyx_t_68, __pyx_pybuffernd_res.diminfo[1].strides) = __pyx_t_64;
+
+        /* "ticks.pyx":143
+ *             if (strike_diff == 5):
+ *                 res[i,4] = buys[k]
+ *             if (strike_diff == 2.5):             # <<<<<<<<<<<<<<
+ *                  res[i,3] = buys[k]
+ *             if (strike_diff == 0):
+ */
+      }
+
+      /* "ticks.pyx":145
+ *             if (strike_diff == 2.5):
+ *                  res[i,3] = buys[k]
+ *             if (strike_diff == 0):             # <<<<<<<<<<<<<<
+ *                  res[i,2] = buys[k]
+ *             if (strike_diff == -2.5):
+ */
+      __pyx_t_12 = ((__pyx_v_strike_diff == 0.0) != 0);
+      if (__pyx_t_12) {
+
+        /* "ticks.pyx":146
+ *                  res[i,3] = buys[k]
+ *             if (strike_diff == 0):
+ *                  res[i,2] = buys[k]             # <<<<<<<<<<<<<<
+ *             if (strike_diff == -2.5):
+ *                  res[i,1] = buys[k]
+ */
+        __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_buys, __pyx_v_k); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 146, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __pyx_t_64 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_64 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 146, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_t_69 = __pyx_v_i;
+        __pyx_t_70 = 2;
+        if (__pyx_t_69 < 0) __pyx_t_69 += __pyx_pybuffernd_res.diminfo[0].shape;
+        if (__pyx_t_70 < 0) __pyx_t_70 += __pyx_pybuffernd_res.diminfo[1].shape;
+        *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_res.rcbuffer->pybuffer.buf, __pyx_t_69, __pyx_pybuffernd_res.diminfo[0].strides, __pyx_t_70, __pyx_pybuffernd_res.diminfo[1].strides) = __pyx_t_64;
+
+        /* "ticks.pyx":145
+ *             if (strike_diff == 2.5):
+ *                  res[i,3] = buys[k]
+ *             if (strike_diff == 0):             # <<<<<<<<<<<<<<
+ *                  res[i,2] = buys[k]
+ *             if (strike_diff == -2.5):
+ */
+      }
+
+      /* "ticks.pyx":147
+ *             if (strike_diff == 0):
+ *                  res[i,2] = buys[k]
+ *             if (strike_diff == -2.5):             # <<<<<<<<<<<<<<
+ *                  res[i,1] = buys[k]
+ *             if (strike_diff == -5):
+ */
+      __pyx_t_12 = ((__pyx_v_strike_diff == -2.5) != 0);
+      if (__pyx_t_12) {
+
+        /* "ticks.pyx":148
+ *                  res[i,2] = buys[k]
+ *             if (strike_diff == -2.5):
+ *                  res[i,1] = buys[k]             # <<<<<<<<<<<<<<
+ *             if (strike_diff == -5):
+ *                  res[i,0] = buys[k]
+ */
+        __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_buys, __pyx_v_k); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 148, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __pyx_t_64 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_64 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 148, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_t_71 = __pyx_v_i;
+        __pyx_t_72 = 1;
+        if (__pyx_t_71 < 0) __pyx_t_71 += __pyx_pybuffernd_res.diminfo[0].shape;
+        if (__pyx_t_72 < 0) __pyx_t_72 += __pyx_pybuffernd_res.diminfo[1].shape;
+        *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_res.rcbuffer->pybuffer.buf, __pyx_t_71, __pyx_pybuffernd_res.diminfo[0].strides, __pyx_t_72, __pyx_pybuffernd_res.diminfo[1].strides) = __pyx_t_64;
+
+        /* "ticks.pyx":147
+ *             if (strike_diff == 0):
+ *                  res[i,2] = buys[k]
+ *             if (strike_diff == -2.5):             # <<<<<<<<<<<<<<
+ *                  res[i,1] = buys[k]
+ *             if (strike_diff == -5):
+ */
+      }
+
+      /* "ticks.pyx":149
+ *             if (strike_diff == -2.5):
+ *                  res[i,1] = buys[k]
+ *             if (strike_diff == -5):             # <<<<<<<<<<<<<<
+ *                  res[i,0] = buys[k]
+ * 
+ */
+      __pyx_t_12 = ((__pyx_v_strike_diff == -5.0) != 0);
+      if (__pyx_t_12) {
+
+        /* "ticks.pyx":150
+ *                  res[i,1] = buys[k]
+ *             if (strike_diff == -5):
+ *                  res[i,0] = buys[k]             # <<<<<<<<<<<<<<
+ * 
+ *         for k in sells.keys():
+ */
+        __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_buys, __pyx_v_k); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 150, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __pyx_t_64 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_64 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 150, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_t_73 = __pyx_v_i;
+        __pyx_t_74 = 0;
+        if (__pyx_t_73 < 0) __pyx_t_73 += __pyx_pybuffernd_res.diminfo[0].shape;
+        if (__pyx_t_74 < 0) __pyx_t_74 += __pyx_pybuffernd_res.diminfo[1].shape;
+        *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_res.rcbuffer->pybuffer.buf, __pyx_t_73, __pyx_pybuffernd_res.diminfo[0].strides, __pyx_t_74, __pyx_pybuffernd_res.diminfo[1].strides) = __pyx_t_64;
+
+        /* "ticks.pyx":149
+ *             if (strike_diff == -2.5):
+ *                  res[i,1] = buys[k]
+ *             if (strike_diff == -5):             # <<<<<<<<<<<<<<
+ *                  res[i,0] = buys[k]
+ * 
+ */
+      }
+
+      /* "ticks.pyx":139
+ *             j+=1
+ * 
+ *         for k in buys.keys():             # <<<<<<<<<<<<<<
+ *             strike_diff = this_strike - k
+ *             if (strike_diff == 5):
+ */
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+    /* "ticks.pyx":152
+ *                  res[i,0] = buys[k]
+ * 
+ *         for k in sells.keys():             # <<<<<<<<<<<<<<
+ *             strike_diff = this_strike - k
+ *             if (strike_diff == 5):
+ */
+    __pyx_t_1 = __Pyx_PyDict_Keys(__pyx_v_sells); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 152, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
+      __pyx_t_3 = __pyx_t_1; __Pyx_INCREF(__pyx_t_3); __pyx_t_62 = 0;
+      __pyx_t_63 = NULL;
+    } else {
+      __pyx_t_62 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 152, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_63 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_63)) __PYX_ERR(6, 152, __pyx_L1_error)
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    for (;;) {
+      if (likely(!__pyx_t_63)) {
+        if (likely(PyList_CheckExact(__pyx_t_3))) {
+          if (__pyx_t_62 >= PyList_GET_SIZE(__pyx_t_3)) break;
+          #if CYTHON_COMPILING_IN_CPYTHON
+          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_62); __Pyx_INCREF(__pyx_t_1); __pyx_t_62++; if (unlikely(0 < 0)) __PYX_ERR(6, 152, __pyx_L1_error)
+          #else
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_62); __pyx_t_62++; if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 152, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_1);
+          #endif
+        } else {
+          if (__pyx_t_62 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
+          #if CYTHON_COMPILING_IN_CPYTHON
+          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_62); __Pyx_INCREF(__pyx_t_1); __pyx_t_62++; if (unlikely(0 < 0)) __PYX_ERR(6, 152, __pyx_L1_error)
+          #else
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_62); __pyx_t_62++; if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 152, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_1);
+          #endif
+        }
+      } else {
+        __pyx_t_1 = __pyx_t_63(__pyx_t_3);
+        if (unlikely(!__pyx_t_1)) {
+          PyObject* exc_type = PyErr_Occurred();
+          if (exc_type) {
+            if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+            else __PYX_ERR(6, 152, __pyx_L1_error)
+          }
+          break;
+        }
+        __Pyx_GOTREF(__pyx_t_1);
+      }
+      __Pyx_XDECREF_SET(__pyx_v_k, __pyx_t_1);
+      __pyx_t_1 = 0;
+
+      /* "ticks.pyx":153
+ * 
+ *         for k in sells.keys():
+ *             strike_diff = this_strike - k             # <<<<<<<<<<<<<<
+ *             if (strike_diff == 5):
+ *                 res[i,9] = sells[k]
+ */
+      __pyx_t_1 = PyFloat_FromDouble(__pyx_v_this_strike); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 153, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_2 = PyNumber_Subtract(__pyx_t_1, __pyx_v_k); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 153, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_64 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_64 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 153, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_v_strike_diff = __pyx_t_64;
+
+      /* "ticks.pyx":154
+ *         for k in sells.keys():
+ *             strike_diff = this_strike - k
+ *             if (strike_diff == 5):             # <<<<<<<<<<<<<<
+ *                 res[i,9] = sells[k]
+ *             if (strike_diff == 2.5):
+ */
+      __pyx_t_12 = ((__pyx_v_strike_diff == 5.0) != 0);
+      if (__pyx_t_12) {
+
+        /* "ticks.pyx":155
+ *             strike_diff = this_strike - k
+ *             if (strike_diff == 5):
+ *                 res[i,9] = sells[k]             # <<<<<<<<<<<<<<
+ *             if (strike_diff == 2.5):
+ *                  res[i,8] = sells[k]
+ */
+        __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_sells, __pyx_v_k); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 155, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_64 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_64 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 155, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_75 = __pyx_v_i;
+        __pyx_t_76 = 9;
+        if (__pyx_t_75 < 0) __pyx_t_75 += __pyx_pybuffernd_res.diminfo[0].shape;
+        if (__pyx_t_76 < 0) __pyx_t_76 += __pyx_pybuffernd_res.diminfo[1].shape;
+        *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_res.rcbuffer->pybuffer.buf, __pyx_t_75, __pyx_pybuffernd_res.diminfo[0].strides, __pyx_t_76, __pyx_pybuffernd_res.diminfo[1].strides) = __pyx_t_64;
+
+        /* "ticks.pyx":154
+ *         for k in sells.keys():
+ *             strike_diff = this_strike - k
+ *             if (strike_diff == 5):             # <<<<<<<<<<<<<<
+ *                 res[i,9] = sells[k]
+ *             if (strike_diff == 2.5):
+ */
+      }
+
+      /* "ticks.pyx":156
+ *             if (strike_diff == 5):
+ *                 res[i,9] = sells[k]
+ *             if (strike_diff == 2.5):             # <<<<<<<<<<<<<<
+ *                  res[i,8] = sells[k]
+ *             if (strike_diff == 0):
+ */
+      __pyx_t_12 = ((__pyx_v_strike_diff == 2.5) != 0);
+      if (__pyx_t_12) {
+
+        /* "ticks.pyx":157
+ *                 res[i,9] = sells[k]
+ *             if (strike_diff == 2.5):
+ *                  res[i,8] = sells[k]             # <<<<<<<<<<<<<<
+ *             if (strike_diff == 0):
+ *                  res[i,7] = sells[k]
+ */
+        __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_sells, __pyx_v_k); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 157, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_64 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_64 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 157, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_77 = __pyx_v_i;
+        __pyx_t_78 = 8;
+        if (__pyx_t_77 < 0) __pyx_t_77 += __pyx_pybuffernd_res.diminfo[0].shape;
+        if (__pyx_t_78 < 0) __pyx_t_78 += __pyx_pybuffernd_res.diminfo[1].shape;
+        *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_res.rcbuffer->pybuffer.buf, __pyx_t_77, __pyx_pybuffernd_res.diminfo[0].strides, __pyx_t_78, __pyx_pybuffernd_res.diminfo[1].strides) = __pyx_t_64;
+
+        /* "ticks.pyx":156
+ *             if (strike_diff == 5):
+ *                 res[i,9] = sells[k]
+ *             if (strike_diff == 2.5):             # <<<<<<<<<<<<<<
+ *                  res[i,8] = sells[k]
+ *             if (strike_diff == 0):
+ */
+      }
+
+      /* "ticks.pyx":158
+ *             if (strike_diff == 2.5):
+ *                  res[i,8] = sells[k]
+ *             if (strike_diff == 0):             # <<<<<<<<<<<<<<
+ *                  res[i,7] = sells[k]
+ *             if (strike_diff == -2.5):
+ */
+      __pyx_t_12 = ((__pyx_v_strike_diff == 0.0) != 0);
+      if (__pyx_t_12) {
+
+        /* "ticks.pyx":159
+ *                  res[i,8] = sells[k]
+ *             if (strike_diff == 0):
+ *                  res[i,7] = sells[k]             # <<<<<<<<<<<<<<
+ *             if (strike_diff == -2.5):
+ *                  res[i,6] = sells[k]
+ */
+        __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_sells, __pyx_v_k); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 159, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_64 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_64 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 159, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_79 = __pyx_v_i;
+        __pyx_t_80 = 7;
+        if (__pyx_t_79 < 0) __pyx_t_79 += __pyx_pybuffernd_res.diminfo[0].shape;
+        if (__pyx_t_80 < 0) __pyx_t_80 += __pyx_pybuffernd_res.diminfo[1].shape;
+        *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_res.rcbuffer->pybuffer.buf, __pyx_t_79, __pyx_pybuffernd_res.diminfo[0].strides, __pyx_t_80, __pyx_pybuffernd_res.diminfo[1].strides) = __pyx_t_64;
+
+        /* "ticks.pyx":158
+ *             if (strike_diff == 2.5):
+ *                  res[i,8] = sells[k]
+ *             if (strike_diff == 0):             # <<<<<<<<<<<<<<
+ *                  res[i,7] = sells[k]
+ *             if (strike_diff == -2.5):
+ */
+      }
+
+      /* "ticks.pyx":160
+ *             if (strike_diff == 0):
+ *                  res[i,7] = sells[k]
+ *             if (strike_diff == -2.5):             # <<<<<<<<<<<<<<
+ *                  res[i,6] = sells[k]
+ *             if (strike_diff == -5):
+ */
+      __pyx_t_12 = ((__pyx_v_strike_diff == -2.5) != 0);
+      if (__pyx_t_12) {
+
+        /* "ticks.pyx":161
+ *                  res[i,7] = sells[k]
+ *             if (strike_diff == -2.5):
+ *                  res[i,6] = sells[k]             # <<<<<<<<<<<<<<
+ *             if (strike_diff == -5):
+ *                  res[i,5] = sells[k]
+ */
+        __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_sells, __pyx_v_k); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 161, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_64 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_64 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 161, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_81 = __pyx_v_i;
+        __pyx_t_82 = 6;
+        if (__pyx_t_81 < 0) __pyx_t_81 += __pyx_pybuffernd_res.diminfo[0].shape;
+        if (__pyx_t_82 < 0) __pyx_t_82 += __pyx_pybuffernd_res.diminfo[1].shape;
+        *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_res.rcbuffer->pybuffer.buf, __pyx_t_81, __pyx_pybuffernd_res.diminfo[0].strides, __pyx_t_82, __pyx_pybuffernd_res.diminfo[1].strides) = __pyx_t_64;
+
+        /* "ticks.pyx":160
+ *             if (strike_diff == 0):
+ *                  res[i,7] = sells[k]
+ *             if (strike_diff == -2.5):             # <<<<<<<<<<<<<<
+ *                  res[i,6] = sells[k]
+ *             if (strike_diff == -5):
+ */
+      }
+
+      /* "ticks.pyx":162
+ *             if (strike_diff == -2.5):
+ *                  res[i,6] = sells[k]
+ *             if (strike_diff == -5):             # <<<<<<<<<<<<<<
+ *                  res[i,5] = sells[k]
+ * 
+ */
+      __pyx_t_12 = ((__pyx_v_strike_diff == -5.0) != 0);
+      if (__pyx_t_12) {
+
+        /* "ticks.pyx":163
+ *                  res[i,6] = sells[k]
+ *             if (strike_diff == -5):
+ *                  res[i,5] = sells[k]             # <<<<<<<<<<<<<<
+ * 
+ *     return res
+ */
+        __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_sells, __pyx_v_k); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 163, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_64 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_64 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 163, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_83 = __pyx_v_i;
+        __pyx_t_84 = 5;
+        if (__pyx_t_83 < 0) __pyx_t_83 += __pyx_pybuffernd_res.diminfo[0].shape;
+        if (__pyx_t_84 < 0) __pyx_t_84 += __pyx_pybuffernd_res.diminfo[1].shape;
+        *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_res.rcbuffer->pybuffer.buf, __pyx_t_83, __pyx_pybuffernd_res.diminfo[0].strides, __pyx_t_84, __pyx_pybuffernd_res.diminfo[1].strides) = __pyx_t_64;
+
+        /* "ticks.pyx":162
+ *             if (strike_diff == -2.5):
+ *                  res[i,6] = sells[k]
+ *             if (strike_diff == -5):             # <<<<<<<<<<<<<<
+ *                  res[i,5] = sells[k]
+ * 
+ */
+      }
+
+      /* "ticks.pyx":152
+ *                  res[i,0] = buys[k]
+ * 
+ *         for k in sells.keys():             # <<<<<<<<<<<<<<
+ *             strike_diff = this_strike - k
+ *             if (strike_diff == 5):
+ */
+    }
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  }
+
+  /* "ticks.pyx":165
+ *                  res[i,5] = sells[k]
+ * 
+ *     return res             # <<<<<<<<<<<<<<
+ * 
+ * @cython.cdivision(True)
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_res));
+  __pyx_r = ((PyObject *)__pyx_v_res);
+  goto __pyx_L0;
+
+  /* "ticks.pyx":82
+ * @cython.cdivision(True)
+ * @cython.boundscheck(False)
+ * def nearby_streaker(np.ndarray[double,ndim=2] md, np.ndarray[long,ndim=1] times, long window_size, long cap = 100):             # <<<<<<<<<<<<<<
+ *     """
+ *     Times MUST be a unique list of timestamps as LONGS. Prices should be
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_md.rcbuffer->pybuffer);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_res.rcbuffer->pybuffer);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_times.rcbuffer->pybuffer);
+  __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
+  __Pyx_AddTraceback("tsutil.nearby_streaker", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  goto __pyx_L2;
+  __pyx_L0:;
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_md.rcbuffer->pybuffer);
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_res.rcbuffer->pybuffer);
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_times.rcbuffer->pybuffer);
+  __pyx_L2:;
+  __Pyx_XDECREF(__pyx_v_start_prices);
+  __Pyx_XDECREF(__pyx_v_buys);
+  __Pyx_XDECREF(__pyx_v_sells);
+  __Pyx_XDECREF((PyObject *)__pyx_v_res);
+  __Pyx_XDECREF(__pyx_v_buy_streaks);
+  __Pyx_XDECREF(__pyx_v_sell_streaks);
+  __Pyx_XDECREF(__pyx_v_k);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "ticks.pyx":169
+ * @cython.cdivision(True)
+ * @cython.boundscheck(False)
+ * def nearby_wmid_changes(np.ndarray[double,ndim=2] md, np.ndarray[long,ndim=1] times, long window_size, long cap = 100):             # <<<<<<<<<<<<<<
+ *     """
+ *     Times MUST be a unique list of timestamps as LONGS. Prices should be
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6tsutil_45nearby_wmid_changes(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_6tsutil_44nearby_wmid_changes[] = "\n    Times MUST be a unique list of timestamps as LONGS. Prices should be \n    ZERO or NaN if no trade at that tick. Same is true for volumes. Window\n    size is in NANOSECONDS.\n    \n    bp0,bz0,ap0,az0,tp,tz,strike\n    ";
+static PyMethodDef __pyx_mdef_6tsutil_45nearby_wmid_changes = {"nearby_wmid_changes", (PyCFunction)__pyx_pw_6tsutil_45nearby_wmid_changes, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6tsutil_44nearby_wmid_changes};
+static PyObject *__pyx_pw_6tsutil_45nearby_wmid_changes(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyArrayObject *__pyx_v_md = 0;
+  PyArrayObject *__pyx_v_times = 0;
+  long __pyx_v_window_size;
+  long __pyx_v_cap;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("nearby_wmid_changes (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_md,&__pyx_n_s_times,&__pyx_n_s_window_size,&__pyx_n_s_cap,0};
+    PyObject* values[4] = {0,0,0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_md)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        case  1:
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_times)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("nearby_wmid_changes", 0, 3, 4, 1); __PYX_ERR(6, 169, __pyx_L3_error)
+        }
+        case  2:
+        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_window_size)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("nearby_wmid_changes", 0, 3, 4, 2); __PYX_ERR(6, 169, __pyx_L3_error)
+        }
+        case  3:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_cap);
+          if (value) { values[3] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "nearby_wmid_changes") < 0)) __PYX_ERR(6, 169, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_md = ((PyArrayObject *)values[0]);
+    __pyx_v_times = ((PyArrayObject *)values[1]);
+    __pyx_v_window_size = __Pyx_PyInt_As_long(values[2]); if (unlikely((__pyx_v_window_size == (long)-1) && PyErr_Occurred())) __PYX_ERR(6, 169, __pyx_L3_error)
+    if (values[3]) {
+      __pyx_v_cap = __Pyx_PyInt_As_long(values[3]); if (unlikely((__pyx_v_cap == (long)-1) && PyErr_Occurred())) __PYX_ERR(6, 169, __pyx_L3_error)
+    } else {
+      __pyx_v_cap = ((long)0x64);
+    }
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("nearby_wmid_changes", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(6, 169, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("tsutil.nearby_wmid_changes", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_md), __pyx_ptype_5numpy_ndarray, 1, "md", 0))) __PYX_ERR(6, 169, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_times), __pyx_ptype_5numpy_ndarray, 1, "times", 0))) __PYX_ERR(6, 169, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6tsutil_44nearby_wmid_changes(__pyx_self, __pyx_v_md, __pyx_v_times, __pyx_v_window_size, __pyx_v_cap);
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6tsutil_44nearby_wmid_changes(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_md, PyArrayObject *__pyx_v_times, long __pyx_v_window_size, long __pyx_v_cap) {
+  long __pyx_v_t_len;
+  long __pyx_v_md_len;
+  long __pyx_v_i;
+  long __pyx_v_win_size;
+  long __pyx_v_j;
+  long __pyx_v_window_start;
+  double __pyx_v_this_strike;
+  double __pyx_v_strike_diff;
+  PyObject *__pyx_v_start_prices = 0;
+  PyObject *__pyx_v_finish_prices = 0;
+  PyArrayObject *__pyx_v_res = 0;
+  CYTHON_UNUSED PyObject *__pyx_v_buys = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_sells = NULL;
+  PyObject *__pyx_v_k = NULL;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_md;
+  __Pyx_Buffer __pyx_pybuffer_md;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_res;
+  __Pyx_Buffer __pyx_pybuffer_res;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_times;
+  __Pyx_Buffer __pyx_pybuffer_times;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyArrayObject *__pyx_t_6 = NULL;
+  long __pyx_t_7;
+  long __pyx_t_8;
+  Py_ssize_t __pyx_t_9;
+  Py_ssize_t __pyx_t_10;
+  Py_ssize_t __pyx_t_11;
+  int __pyx_t_12;
+  Py_ssize_t __pyx_t_13;
+  int __pyx_t_14;
+  Py_ssize_t __pyx_t_15;
+  Py_ssize_t __pyx_t_16;
+  Py_ssize_t __pyx_t_17;
+  Py_ssize_t __pyx_t_18;
+  Py_ssize_t __pyx_t_19;
+  Py_ssize_t __pyx_t_20;
+  Py_ssize_t __pyx_t_21;
+  Py_ssize_t __pyx_t_22;
+  Py_ssize_t __pyx_t_23;
+  Py_ssize_t __pyx_t_24;
+  Py_ssize_t __pyx_t_25;
+  Py_ssize_t __pyx_t_26;
+  Py_ssize_t __pyx_t_27;
+  Py_ssize_t __pyx_t_28;
+  Py_ssize_t __pyx_t_29;
+  Py_ssize_t __pyx_t_30;
+  Py_ssize_t __pyx_t_31;
+  Py_ssize_t __pyx_t_32;
+  Py_ssize_t __pyx_t_33;
+  Py_ssize_t __pyx_t_34;
+  Py_ssize_t __pyx_t_35;
+  PyObject *(*__pyx_t_36)(PyObject *);
+  double __pyx_t_37;
+  Py_ssize_t __pyx_t_38;
+  Py_ssize_t __pyx_t_39;
+  Py_ssize_t __pyx_t_40;
+  Py_ssize_t __pyx_t_41;
+  Py_ssize_t __pyx_t_42;
+  Py_ssize_t __pyx_t_43;
+  Py_ssize_t __pyx_t_44;
+  Py_ssize_t __pyx_t_45;
+  Py_ssize_t __pyx_t_46;
+  Py_ssize_t __pyx_t_47;
+  __Pyx_RefNannySetupContext("nearby_wmid_changes", 0);
+  __pyx_pybuffer_res.pybuffer.buf = NULL;
+  __pyx_pybuffer_res.refcount = 0;
+  __pyx_pybuffernd_res.data = NULL;
+  __pyx_pybuffernd_res.rcbuffer = &__pyx_pybuffer_res;
+  __pyx_pybuffer_md.pybuffer.buf = NULL;
+  __pyx_pybuffer_md.refcount = 0;
+  __pyx_pybuffernd_md.data = NULL;
+  __pyx_pybuffernd_md.rcbuffer = &__pyx_pybuffer_md;
+  __pyx_pybuffer_times.pybuffer.buf = NULL;
+  __pyx_pybuffer_times.refcount = 0;
+  __pyx_pybuffernd_times.data = NULL;
+  __pyx_pybuffernd_times.rcbuffer = &__pyx_pybuffer_times;
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_md.rcbuffer->pybuffer, (PyObject*)__pyx_v_md, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) __PYX_ERR(6, 169, __pyx_L1_error)
+  }
+  __pyx_pybuffernd_md.diminfo[0].strides = __pyx_pybuffernd_md.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_md.diminfo[0].shape = __pyx_pybuffernd_md.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_md.diminfo[1].strides = __pyx_pybuffernd_md.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_md.diminfo[1].shape = __pyx_pybuffernd_md.rcbuffer->pybuffer.shape[1];
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_times.rcbuffer->pybuffer, (PyObject*)__pyx_v_times, &__Pyx_TypeInfo_long, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(6, 169, __pyx_L1_error)
+  }
+  __pyx_pybuffernd_times.diminfo[0].strides = __pyx_pybuffernd_times.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_times.diminfo[0].shape = __pyx_pybuffernd_times.rcbuffer->pybuffer.shape[0];
+
+  /* "ticks.pyx":178
+ *     """
+ *     cdef:
+ *         long t_len = times.shape[0]             # <<<<<<<<<<<<<<
+ *         long md_len = md.shape[0]
+ * 
+ */
+  __pyx_v_t_len = (__pyx_v_times->dimensions[0]);
+
+  /* "ticks.pyx":179
+ *     cdef:
+ *         long t_len = times.shape[0]
+ *         long md_len = md.shape[0]             # <<<<<<<<<<<<<<
+ * 
+ *         long i =0, win_size = window_size, t_diff, j, window_start
+ */
+  __pyx_v_md_len = (__pyx_v_md->dimensions[0]);
+
+  /* "ticks.pyx":181
+ *         long md_len = md.shape[0]
+ * 
+ *         long i =0, win_size = window_size, t_diff, j, window_start             # <<<<<<<<<<<<<<
+ * 
+ *         double this_strike, strike_diff
+ */
+  __pyx_v_i = 0;
+  __pyx_v_win_size = __pyx_v_window_size;
+
+  /* "ticks.pyx":184
+ * 
+ *         double this_strike, strike_diff
+ *         dict start_prices = {}             # <<<<<<<<<<<<<<
+ *         dict finish_prices = {}
+ *         np.ndarray[double, ndim=2] res = np.zeros((md_len,5), dtype=np.double)
+ */
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 184, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_start_prices = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "ticks.pyx":185
+ *         double this_strike, strike_diff
+ *         dict start_prices = {}
+ *         dict finish_prices = {}             # <<<<<<<<<<<<<<
+ *         np.ndarray[double, ndim=2] res = np.zeros((md_len,5), dtype=np.double)
+ * 
+ */
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 185, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_finish_prices = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "ticks.pyx":186
+ *         dict start_prices = {}
+ *         dict finish_prices = {}
+ *         np.ndarray[double, ndim=2] res = np.zeros((md_len,5), dtype=np.double)             # <<<<<<<<<<<<<<
+ * 
+ *     assert(t_len==md_len)
+ */
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 186, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 186, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_md_len); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 186, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 186, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
+  __Pyx_INCREF(__pyx_int_5);
+  __Pyx_GIVEREF(__pyx_int_5);
+  PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_int_5);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 186, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_3);
+  __pyx_t_3 = 0;
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 186, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(6, 186, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_double); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 186, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(6, 186, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 186, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(6, 186, __pyx_L1_error)
+  __pyx_t_6 = ((PyArrayObject *)__pyx_t_5);
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_res.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
+      __pyx_v_res = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_res.rcbuffer->pybuffer.buf = NULL;
+      __PYX_ERR(6, 186, __pyx_L1_error)
+    } else {__pyx_pybuffernd_res.diminfo[0].strides = __pyx_pybuffernd_res.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_res.diminfo[0].shape = __pyx_pybuffernd_res.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_res.diminfo[1].strides = __pyx_pybuffernd_res.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_res.diminfo[1].shape = __pyx_pybuffernd_res.rcbuffer->pybuffer.shape[1];
+    }
+  }
+  __pyx_t_6 = 0;
+  __pyx_v_res = ((PyArrayObject *)__pyx_t_5);
+  __pyx_t_5 = 0;
+
+  /* "ticks.pyx":188
+ *         np.ndarray[double, ndim=2] res = np.zeros((md_len,5), dtype=np.double)
+ * 
+ *     assert(t_len==md_len)             # <<<<<<<<<<<<<<
+ * 
+ *     for i in range(1,t_len):
+ */
+  #ifndef CYTHON_WITHOUT_ASSERTIONS
+  if (unlikely(!Py_OptimizeFlag)) {
+    if (unlikely(!((__pyx_v_t_len == __pyx_v_md_len) != 0))) {
+      PyErr_SetNone(PyExc_AssertionError);
+      __PYX_ERR(6, 188, __pyx_L1_error)
+    }
+  }
+  #endif
+
+  /* "ticks.pyx":190
+ *     assert(t_len==md_len)
+ * 
+ *     for i in range(1,t_len):             # <<<<<<<<<<<<<<
+ *         window_start = times[i] - win_size
+ *         j = i
+ */
+  __pyx_t_7 = __pyx_v_t_len;
+  for (__pyx_t_8 = 1; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
+    __pyx_v_i = __pyx_t_8;
+
+    /* "ticks.pyx":191
+ * 
+ *     for i in range(1,t_len):
+ *         window_start = times[i] - win_size             # <<<<<<<<<<<<<<
+ *         j = i
+ *         this_strike = md[i,6]
+ */
+    __pyx_t_9 = __pyx_v_i;
+    if (__pyx_t_9 < 0) __pyx_t_9 += __pyx_pybuffernd_times.diminfo[0].shape;
+    __pyx_v_window_start = ((*__Pyx_BufPtrStrided1d(long *, __pyx_pybuffernd_times.rcbuffer->pybuffer.buf, __pyx_t_9, __pyx_pybuffernd_times.diminfo[0].strides)) - __pyx_v_win_size);
+
+    /* "ticks.pyx":192
+ *     for i in range(1,t_len):
+ *         window_start = times[i] - win_size
+ *         j = i             # <<<<<<<<<<<<<<
+ *         this_strike = md[i,6]
+ * 
+ */
+    __pyx_v_j = __pyx_v_i;
+
+    /* "ticks.pyx":193
+ *         window_start = times[i] - win_size
+ *         j = i
+ *         this_strike = md[i,6]             # <<<<<<<<<<<<<<
+ * 
+ *         start_prices = {}
+ */
+    __pyx_t_10 = __pyx_v_i;
+    __pyx_t_11 = 6;
+    if (__pyx_t_10 < 0) __pyx_t_10 += __pyx_pybuffernd_md.diminfo[0].shape;
+    if (__pyx_t_11 < 0) __pyx_t_11 += __pyx_pybuffernd_md.diminfo[1].shape;
+    __pyx_v_this_strike = (*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_10, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_11, __pyx_pybuffernd_md.diminfo[1].strides));
+
+    /* "ticks.pyx":195
+ *         this_strike = md[i,6]
+ * 
+ *         start_prices = {}             # <<<<<<<<<<<<<<
+ *         buys = {}
+ *         sells = {}
+ */
+    __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 195, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF_SET(__pyx_v_start_prices, ((PyObject*)__pyx_t_5));
+    __pyx_t_5 = 0;
+
+    /* "ticks.pyx":196
+ * 
+ *         start_prices = {}
+ *         buys = {}             # <<<<<<<<<<<<<<
+ *         sells = {}
+ *         #climb back to find the start of the window
+ */
+    __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 196, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_XDECREF_SET(__pyx_v_buys, ((PyObject*)__pyx_t_5));
+    __pyx_t_5 = 0;
+
+    /* "ticks.pyx":197
+ *         start_prices = {}
+ *         buys = {}
+ *         sells = {}             # <<<<<<<<<<<<<<
+ *         #climb back to find the start of the window
+ *         while times[j]>= window_start and j>=0 and j >= (i-cap):
+ */
+    __pyx_t_5 = PyDict_New(); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 197, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_XDECREF_SET(__pyx_v_sells, ((PyObject*)__pyx_t_5));
+    __pyx_t_5 = 0;
+
+    /* "ticks.pyx":199
+ *         sells = {}
+ *         #climb back to find the start of the window
+ *         while times[j]>= window_start and j>=0 and j >= (i-cap):             # <<<<<<<<<<<<<<
+ *             start_prices[md[j,6]] = kwmid(md[j,0],md[j,1],md[j,2],md[j,3],.01)
+ *             j-=1
+ */
+    while (1) {
+      __pyx_t_13 = __pyx_v_j;
+      if (__pyx_t_13 < 0) __pyx_t_13 += __pyx_pybuffernd_times.diminfo[0].shape;
+      __pyx_t_14 = (((*__Pyx_BufPtrStrided1d(long *, __pyx_pybuffernd_times.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_times.diminfo[0].strides)) >= __pyx_v_window_start) != 0);
+      if (__pyx_t_14) {
+      } else {
+        __pyx_t_12 = __pyx_t_14;
+        goto __pyx_L7_bool_binop_done;
+      }
+      __pyx_t_14 = ((__pyx_v_j >= 0) != 0);
+      if (__pyx_t_14) {
+      } else {
+        __pyx_t_12 = __pyx_t_14;
+        goto __pyx_L7_bool_binop_done;
+      }
+      __pyx_t_14 = ((__pyx_v_j >= (__pyx_v_i - __pyx_v_cap)) != 0);
+      __pyx_t_12 = __pyx_t_14;
+      __pyx_L7_bool_binop_done:;
+      if (!__pyx_t_12) break;
+
+      /* "ticks.pyx":200
+ *         #climb back to find the start of the window
+ *         while times[j]>= window_start and j>=0 and j >= (i-cap):
+ *             start_prices[md[j,6]] = kwmid(md[j,0],md[j,1],md[j,2],md[j,3],.01)             # <<<<<<<<<<<<<<
+ *             j-=1
+ * 
+ */
+      __pyx_t_15 = __pyx_v_j;
+      __pyx_t_16 = 0;
+      if (__pyx_t_15 < 0) __pyx_t_15 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_16 < 0) __pyx_t_16 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_17 = __pyx_v_j;
+      __pyx_t_18 = 1;
+      if (__pyx_t_17 < 0) __pyx_t_17 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_18 < 0) __pyx_t_18 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_19 = __pyx_v_j;
+      __pyx_t_20 = 2;
+      if (__pyx_t_19 < 0) __pyx_t_19 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_20 < 0) __pyx_t_20 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_21 = __pyx_v_j;
+      __pyx_t_22 = 3;
+      if (__pyx_t_21 < 0) __pyx_t_21 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_22 < 0) __pyx_t_22 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_5 = PyFloat_FromDouble(__pyx_f_6tsutil_kwmid((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_15, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_16, __pyx_pybuffernd_md.diminfo[1].strides)), (*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_17, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_18, __pyx_pybuffernd_md.diminfo[1].strides)), (*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_19, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_20, __pyx_pybuffernd_md.diminfo[1].strides)), (*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_21, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_22, __pyx_pybuffernd_md.diminfo[1].strides)), .01, 0)); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 200, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_23 = __pyx_v_j;
+      __pyx_t_24 = 6;
+      if (__pyx_t_23 < 0) __pyx_t_23 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_24 < 0) __pyx_t_24 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_3 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_24, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 200, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      if (unlikely(PyDict_SetItem(__pyx_v_start_prices, __pyx_t_3, __pyx_t_5) < 0)) __PYX_ERR(6, 200, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+
+      /* "ticks.pyx":201
+ *         while times[j]>= window_start and j>=0 and j >= (i-cap):
+ *             start_prices[md[j,6]] = kwmid(md[j,0],md[j,1],md[j,2],md[j,3],.01)
+ *             j-=1             # <<<<<<<<<<<<<<
+ * 
+ *         #now we've got starting mid price of all products (assuming they were in the window)
+ */
+      __pyx_v_j = (__pyx_v_j - 1);
+    }
+
+    /* "ticks.pyx":204
+ * 
+ *         #now we've got starting mid price of all products (assuming they were in the window)
+ *         j+=1             # <<<<<<<<<<<<<<
+ * 
+ *         #now step FORWARD through to calculate the wmid changes
+ */
+    __pyx_v_j = (__pyx_v_j + 1);
+
+    /* "ticks.pyx":207
+ * 
+ *         #now step FORWARD through to calculate the wmid changes
+ *         while j<=i:             # <<<<<<<<<<<<<<
+ *             finish_prices[md[j,6]] = kwmid(md[j,0],md[j,1],md[j,2],md[j,3],.01)
+ *             j+=1
+ */
+    while (1) {
+      __pyx_t_12 = ((__pyx_v_j <= __pyx_v_i) != 0);
+      if (!__pyx_t_12) break;
+
+      /* "ticks.pyx":208
+ *         #now step FORWARD through to calculate the wmid changes
+ *         while j<=i:
+ *             finish_prices[md[j,6]] = kwmid(md[j,0],md[j,1],md[j,2],md[j,3],.01)             # <<<<<<<<<<<<<<
+ *             j+=1
+ * 
+ */
+      __pyx_t_25 = __pyx_v_j;
+      __pyx_t_26 = 0;
+      if (__pyx_t_25 < 0) __pyx_t_25 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_26 < 0) __pyx_t_26 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_27 = __pyx_v_j;
+      __pyx_t_28 = 1;
+      if (__pyx_t_27 < 0) __pyx_t_27 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_28 < 0) __pyx_t_28 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_29 = __pyx_v_j;
+      __pyx_t_30 = 2;
+      if (__pyx_t_29 < 0) __pyx_t_29 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_30 < 0) __pyx_t_30 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_31 = __pyx_v_j;
+      __pyx_t_32 = 3;
+      if (__pyx_t_31 < 0) __pyx_t_31 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_32 < 0) __pyx_t_32 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_5 = PyFloat_FromDouble(__pyx_f_6tsutil_kwmid((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_25, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_26, __pyx_pybuffernd_md.diminfo[1].strides)), (*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_28, __pyx_pybuffernd_md.diminfo[1].strides)), (*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_29, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_30, __pyx_pybuffernd_md.diminfo[1].strides)), (*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_31, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_32, __pyx_pybuffernd_md.diminfo[1].strides)), .01, 0)); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 208, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_33 = __pyx_v_j;
+      __pyx_t_34 = 6;
+      if (__pyx_t_33 < 0) __pyx_t_33 += __pyx_pybuffernd_md.diminfo[0].shape;
+      if (__pyx_t_34 < 0) __pyx_t_34 += __pyx_pybuffernd_md.diminfo[1].shape;
+      __pyx_t_3 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_md.rcbuffer->pybuffer.buf, __pyx_t_33, __pyx_pybuffernd_md.diminfo[0].strides, __pyx_t_34, __pyx_pybuffernd_md.diminfo[1].strides))); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 208, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      if (unlikely(PyDict_SetItem(__pyx_v_finish_prices, __pyx_t_3, __pyx_t_5) < 0)) __PYX_ERR(6, 208, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+
+      /* "ticks.pyx":209
+ *         while j<=i:
+ *             finish_prices[md[j,6]] = kwmid(md[j,0],md[j,1],md[j,2],md[j,3],.01)
+ *             j+=1             # <<<<<<<<<<<<<<
+ * 
+ *         for k in finish_prices.keys():
+ */
+      __pyx_v_j = (__pyx_v_j + 1);
+    }
+
+    /* "ticks.pyx":211
+ *             j+=1
+ * 
+ *         for k in finish_prices.keys():             # <<<<<<<<<<<<<<
+ *             strike_diff = this_strike - k
+ *             if not start_prices.has_key(k):
+ */
+    __pyx_t_5 = __Pyx_PyDict_Keys(__pyx_v_finish_prices); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 211, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    if (likely(PyList_CheckExact(__pyx_t_5)) || PyTuple_CheckExact(__pyx_t_5)) {
+      __pyx_t_3 = __pyx_t_5; __Pyx_INCREF(__pyx_t_3); __pyx_t_35 = 0;
+      __pyx_t_36 = NULL;
+    } else {
+      __pyx_t_35 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(6, 211, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_36 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_36)) __PYX_ERR(6, 211, __pyx_L1_error)
+    }
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    for (;;) {
+      if (likely(!__pyx_t_36)) {
+        if (likely(PyList_CheckExact(__pyx_t_3))) {
+          if (__pyx_t_35 >= PyList_GET_SIZE(__pyx_t_3)) break;
+          #if CYTHON_COMPILING_IN_CPYTHON
+          __pyx_t_5 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_35); __Pyx_INCREF(__pyx_t_5); __pyx_t_35++; if (unlikely(0 < 0)) __PYX_ERR(6, 211, __pyx_L1_error)
+          #else
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_3, __pyx_t_35); __pyx_t_35++; if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 211, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_5);
+          #endif
+        } else {
+          if (__pyx_t_35 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
+          #if CYTHON_COMPILING_IN_CPYTHON
+          __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_35); __Pyx_INCREF(__pyx_t_5); __pyx_t_35++; if (unlikely(0 < 0)) __PYX_ERR(6, 211, __pyx_L1_error)
+          #else
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_3, __pyx_t_35); __pyx_t_35++; if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 211, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_5);
+          #endif
+        }
+      } else {
+        __pyx_t_5 = __pyx_t_36(__pyx_t_3);
+        if (unlikely(!__pyx_t_5)) {
+          PyObject* exc_type = PyErr_Occurred();
+          if (exc_type) {
+            if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+            else __PYX_ERR(6, 211, __pyx_L1_error)
+          }
+          break;
+        }
+        __Pyx_GOTREF(__pyx_t_5);
+      }
+      __Pyx_XDECREF_SET(__pyx_v_k, __pyx_t_5);
+      __pyx_t_5 = 0;
+
+      /* "ticks.pyx":212
+ * 
+ *         for k in finish_prices.keys():
+ *             strike_diff = this_strike - k             # <<<<<<<<<<<<<<
+ *             if not start_prices.has_key(k):
+ *                 continue
+ */
+      __pyx_t_5 = PyFloat_FromDouble(__pyx_v_this_strike); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 212, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_1 = PyNumber_Subtract(__pyx_t_5, __pyx_v_k); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 212, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_t_37 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_37 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 212, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_v_strike_diff = __pyx_t_37;
+
+      /* "ticks.pyx":213
+ *         for k in finish_prices.keys():
+ *             strike_diff = this_strike - k
+ *             if not start_prices.has_key(k):             # <<<<<<<<<<<<<<
+ *                 continue
+ *             if (strike_diff == 5):
+ */
+      __pyx_t_12 = PyDict_Contains(__pyx_v_start_prices, __pyx_v_k); if (unlikely(__pyx_t_12 == -1)) __PYX_ERR(6, 213, __pyx_L1_error)
+      __pyx_t_14 = ((!(__pyx_t_12 != 0)) != 0);
+      if (__pyx_t_14) {
+
+        /* "ticks.pyx":214
+ *             strike_diff = this_strike - k
+ *             if not start_prices.has_key(k):
+ *                 continue             # <<<<<<<<<<<<<<
+ *             if (strike_diff == 5):
+ *                 res[i,4] = finish_prices[k] - start_prices[k]
+ */
+        goto __pyx_L12_continue;
+
+        /* "ticks.pyx":213
+ *         for k in finish_prices.keys():
+ *             strike_diff = this_strike - k
+ *             if not start_prices.has_key(k):             # <<<<<<<<<<<<<<
+ *                 continue
+ *             if (strike_diff == 5):
+ */
+      }
+
+      /* "ticks.pyx":215
+ *             if not start_prices.has_key(k):
+ *                 continue
+ *             if (strike_diff == 5):             # <<<<<<<<<<<<<<
+ *                 res[i,4] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == 2.5):
+ */
+      __pyx_t_14 = ((__pyx_v_strike_diff == 5.0) != 0);
+      if (__pyx_t_14) {
+
+        /* "ticks.pyx":216
+ *                 continue
+ *             if (strike_diff == 5):
+ *                 res[i,4] = finish_prices[k] - start_prices[k]             # <<<<<<<<<<<<<<
+ *             if (strike_diff == 2.5):
+ *                  res[i,3] = finish_prices[k] - start_prices[k]
+ */
+        __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_finish_prices, __pyx_v_k); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 216, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __pyx_t_5 = __Pyx_PyDict_GetItem(__pyx_v_start_prices, __pyx_v_k); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 216, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_5);
+        __pyx_t_2 = PyNumber_Subtract(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 216, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __pyx_t_37 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_37 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 216, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_38 = __pyx_v_i;
+        __pyx_t_39 = 4;
+        if (__pyx_t_38 < 0) __pyx_t_38 += __pyx_pybuffernd_res.diminfo[0].shape;
+        if (__pyx_t_39 < 0) __pyx_t_39 += __pyx_pybuffernd_res.diminfo[1].shape;
+        *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_res.rcbuffer->pybuffer.buf, __pyx_t_38, __pyx_pybuffernd_res.diminfo[0].strides, __pyx_t_39, __pyx_pybuffernd_res.diminfo[1].strides) = __pyx_t_37;
+
+        /* "ticks.pyx":215
+ *             if not start_prices.has_key(k):
+ *                 continue
+ *             if (strike_diff == 5):             # <<<<<<<<<<<<<<
+ *                 res[i,4] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == 2.5):
+ */
+      }
+
+      /* "ticks.pyx":217
+ *             if (strike_diff == 5):
+ *                 res[i,4] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == 2.5):             # <<<<<<<<<<<<<<
+ *                  res[i,3] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == 0):
+ */
+      __pyx_t_14 = ((__pyx_v_strike_diff == 2.5) != 0);
+      if (__pyx_t_14) {
+
+        /* "ticks.pyx":218
+ *                 res[i,4] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == 2.5):
+ *                  res[i,3] = finish_prices[k] - start_prices[k]             # <<<<<<<<<<<<<<
+ *             if (strike_diff == 0):
+ *                  res[i,2] = finish_prices[k] - start_prices[k]
+ */
+        __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_finish_prices, __pyx_v_k); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 218, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_5 = __Pyx_PyDict_GetItem(__pyx_v_start_prices, __pyx_v_k); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 218, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_5);
+        __pyx_t_1 = PyNumber_Subtract(__pyx_t_2, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 218, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __pyx_t_37 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_37 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 218, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __pyx_t_40 = __pyx_v_i;
+        __pyx_t_41 = 3;
+        if (__pyx_t_40 < 0) __pyx_t_40 += __pyx_pybuffernd_res.diminfo[0].shape;
+        if (__pyx_t_41 < 0) __pyx_t_41 += __pyx_pybuffernd_res.diminfo[1].shape;
+        *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_res.rcbuffer->pybuffer.buf, __pyx_t_40, __pyx_pybuffernd_res.diminfo[0].strides, __pyx_t_41, __pyx_pybuffernd_res.diminfo[1].strides) = __pyx_t_37;
+
+        /* "ticks.pyx":217
+ *             if (strike_diff == 5):
+ *                 res[i,4] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == 2.5):             # <<<<<<<<<<<<<<
+ *                  res[i,3] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == 0):
+ */
+      }
+
+      /* "ticks.pyx":219
+ *             if (strike_diff == 2.5):
+ *                  res[i,3] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == 0):             # <<<<<<<<<<<<<<
+ *                  res[i,2] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == -2.5):
+ */
+      __pyx_t_14 = ((__pyx_v_strike_diff == 0.0) != 0);
+      if (__pyx_t_14) {
+
+        /* "ticks.pyx":220
+ *                  res[i,3] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == 0):
+ *                  res[i,2] = finish_prices[k] - start_prices[k]             # <<<<<<<<<<<<<<
+ *             if (strike_diff == -2.5):
+ *                  res[i,1] = finish_prices[k] - start_prices[k]
+ */
+        __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_finish_prices, __pyx_v_k); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 220, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __pyx_t_5 = __Pyx_PyDict_GetItem(__pyx_v_start_prices, __pyx_v_k); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 220, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_5);
+        __pyx_t_2 = PyNumber_Subtract(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 220, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __pyx_t_37 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_37 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 220, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_42 = __pyx_v_i;
+        __pyx_t_43 = 2;
+        if (__pyx_t_42 < 0) __pyx_t_42 += __pyx_pybuffernd_res.diminfo[0].shape;
+        if (__pyx_t_43 < 0) __pyx_t_43 += __pyx_pybuffernd_res.diminfo[1].shape;
+        *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_res.rcbuffer->pybuffer.buf, __pyx_t_42, __pyx_pybuffernd_res.diminfo[0].strides, __pyx_t_43, __pyx_pybuffernd_res.diminfo[1].strides) = __pyx_t_37;
+
+        /* "ticks.pyx":219
+ *             if (strike_diff == 2.5):
+ *                  res[i,3] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == 0):             # <<<<<<<<<<<<<<
+ *                  res[i,2] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == -2.5):
+ */
+      }
+
+      /* "ticks.pyx":221
+ *             if (strike_diff == 0):
+ *                  res[i,2] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == -2.5):             # <<<<<<<<<<<<<<
+ *                  res[i,1] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == -5):
+ */
+      __pyx_t_14 = ((__pyx_v_strike_diff == -2.5) != 0);
+      if (__pyx_t_14) {
+
+        /* "ticks.pyx":222
+ *                  res[i,2] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == -2.5):
+ *                  res[i,1] = finish_prices[k] - start_prices[k]             # <<<<<<<<<<<<<<
+ *             if (strike_diff == -5):
+ *                  res[i,0] = finish_prices[k] - start_prices[k]
+ */
+        __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_finish_prices, __pyx_v_k); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 222, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_5 = __Pyx_PyDict_GetItem(__pyx_v_start_prices, __pyx_v_k); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 222, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_5);
+        __pyx_t_1 = PyNumber_Subtract(__pyx_t_2, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 222, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __pyx_t_37 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_37 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 222, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __pyx_t_44 = __pyx_v_i;
+        __pyx_t_45 = 1;
+        if (__pyx_t_44 < 0) __pyx_t_44 += __pyx_pybuffernd_res.diminfo[0].shape;
+        if (__pyx_t_45 < 0) __pyx_t_45 += __pyx_pybuffernd_res.diminfo[1].shape;
+        *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_res.rcbuffer->pybuffer.buf, __pyx_t_44, __pyx_pybuffernd_res.diminfo[0].strides, __pyx_t_45, __pyx_pybuffernd_res.diminfo[1].strides) = __pyx_t_37;
+
+        /* "ticks.pyx":221
+ *             if (strike_diff == 0):
+ *                  res[i,2] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == -2.5):             # <<<<<<<<<<<<<<
+ *                  res[i,1] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == -5):
+ */
+      }
+
+      /* "ticks.pyx":223
+ *             if (strike_diff == -2.5):
+ *                  res[i,1] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == -5):             # <<<<<<<<<<<<<<
+ *                  res[i,0] = finish_prices[k] - start_prices[k]
+ *     return res
+ */
+      __pyx_t_14 = ((__pyx_v_strike_diff == -5.0) != 0);
+      if (__pyx_t_14) {
+
+        /* "ticks.pyx":224
+ *                  res[i,1] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == -5):
+ *                  res[i,0] = finish_prices[k] - start_prices[k]             # <<<<<<<<<<<<<<
+ *     return res
+ */
+        __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_finish_prices, __pyx_v_k); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 224, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __pyx_t_5 = __Pyx_PyDict_GetItem(__pyx_v_start_prices, __pyx_v_k); if (unlikely(!__pyx_t_5)) __PYX_ERR(6, 224, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_5);
+        __pyx_t_2 = PyNumber_Subtract(__pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(6, 224, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __pyx_t_37 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_37 == (double)-1) && PyErr_Occurred())) __PYX_ERR(6, 224, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_46 = __pyx_v_i;
+        __pyx_t_47 = 0;
+        if (__pyx_t_46 < 0) __pyx_t_46 += __pyx_pybuffernd_res.diminfo[0].shape;
+        if (__pyx_t_47 < 0) __pyx_t_47 += __pyx_pybuffernd_res.diminfo[1].shape;
+        *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_res.rcbuffer->pybuffer.buf, __pyx_t_46, __pyx_pybuffernd_res.diminfo[0].strides, __pyx_t_47, __pyx_pybuffernd_res.diminfo[1].strides) = __pyx_t_37;
+
+        /* "ticks.pyx":223
+ *             if (strike_diff == -2.5):
+ *                  res[i,1] = finish_prices[k] - start_prices[k]
+ *             if (strike_diff == -5):             # <<<<<<<<<<<<<<
+ *                  res[i,0] = finish_prices[k] - start_prices[k]
+ *     return res
+ */
+      }
+
+      /* "ticks.pyx":211
+ *             j+=1
+ * 
+ *         for k in finish_prices.keys():             # <<<<<<<<<<<<<<
+ *             strike_diff = this_strike - k
+ *             if not start_prices.has_key(k):
+ */
+      __pyx_L12_continue:;
+    }
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  }
+
+  /* "ticks.pyx":225
+ *             if (strike_diff == -5):
+ *                  res[i,0] = finish_prices[k] - start_prices[k]
+ *     return res             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_res));
+  __pyx_r = ((PyObject *)__pyx_v_res);
+  goto __pyx_L0;
+
+  /* "ticks.pyx":169
+ * @cython.cdivision(True)
+ * @cython.boundscheck(False)
+ * def nearby_wmid_changes(np.ndarray[double,ndim=2] md, np.ndarray[long,ndim=1] times, long window_size, long cap = 100):             # <<<<<<<<<<<<<<
+ *     """
+ *     Times MUST be a unique list of timestamps as LONGS. Prices should be
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_md.rcbuffer->pybuffer);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_res.rcbuffer->pybuffer);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_times.rcbuffer->pybuffer);
+  __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
+  __Pyx_AddTraceback("tsutil.nearby_wmid_changes", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  goto __pyx_L2;
+  __pyx_L0:;
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_md.rcbuffer->pybuffer);
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_res.rcbuffer->pybuffer);
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_times.rcbuffer->pybuffer);
+  __pyx_L2:;
+  __Pyx_XDECREF(__pyx_v_start_prices);
+  __Pyx_XDECREF(__pyx_v_finish_prices);
+  __Pyx_XDECREF((PyObject *)__pyx_v_res);
+  __Pyx_XDECREF(__pyx_v_buys);
+  __Pyx_XDECREF(__pyx_v_sells);
+  __Pyx_XDECREF(__pyx_v_k);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "tsutil.pyx":32
+ * @cython.cdivision(True)
+ * @cython.boundscheck(False)
+ * def fix_times(np.ndarray[long, ndim=1] df_times):             # <<<<<<<<<<<<<<
+ *     return fix_timestamps(df_times)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6tsutil_47fix_times(PyObject *__pyx_self, PyObject *__pyx_v_df_times); /*proto*/
+static PyMethodDef __pyx_mdef_6tsutil_47fix_times = {"fix_times", (PyCFunction)__pyx_pw_6tsutil_47fix_times, METH_O, 0};
+static PyObject *__pyx_pw_6tsutil_47fix_times(PyObject *__pyx_self, PyObject *__pyx_v_df_times) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("fix_times (wrapper)", 0);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_df_times), __pyx_ptype_5numpy_ndarray, 1, "df_times", 0))) __PYX_ERR(1, 32, __pyx_L1_error)
+  __pyx_r = __pyx_pf_6tsutil_46fix_times(__pyx_self, ((PyArrayObject *)__pyx_v_df_times));
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6tsutil_46fix_times(CYTHON_UNUSED PyObject *__pyx_self, PyArrayObject *__pyx_v_df_times) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_df_times;
   __Pyx_Buffer __pyx_pybuffer_df_times;
   PyObject *__pyx_r = NULL;
@@ -17252,16 +19623,40 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__58);
   __pyx_codeobj__59 = (PyObject*)__Pyx_PyCode_New(1, 0, 6, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__58, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_jgreenwald_libs_tsutil_tic, __pyx_n_s_ticks_to_prev_ticks, 63, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__59)) __PYX_ERR(6, 63, __pyx_L1_error)
 
+  /* "ticks.pyx":82
+ * @cython.cdivision(True)
+ * @cython.boundscheck(False)
+ * def nearby_streaker(np.ndarray[double,ndim=2] md, np.ndarray[long,ndim=1] times, long window_size, long cap = 100):             # <<<<<<<<<<<<<<
+ *     """
+ *     Times MUST be a unique list of timestamps as LONGS. Prices should be
+ */
+  __pyx_tuple__60 = PyTuple_Pack(23, __pyx_n_s_md, __pyx_n_s_times, __pyx_n_s_window_size, __pyx_n_s_cap, __pyx_n_s_t_len, __pyx_n_s_md_len, __pyx_n_s_i, __pyx_n_s_win_size, __pyx_n_s_t_diff, __pyx_n_s_j, __pyx_n_s_window_start, __pyx_n_s_tots_buys, __pyx_n_s_tots_sells, __pyx_n_s_ref, __pyx_n_s_this_strike, __pyx_n_s_strike_diff, __pyx_n_s_start_prices, __pyx_n_s_buys, __pyx_n_s_sells, __pyx_n_s_res, __pyx_n_s_buy_streaks, __pyx_n_s_sell_streaks, __pyx_n_s_k); if (unlikely(!__pyx_tuple__60)) __PYX_ERR(6, 82, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__60);
+  __Pyx_GIVEREF(__pyx_tuple__60);
+  __pyx_codeobj__61 = (PyObject*)__Pyx_PyCode_New(4, 0, 23, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__60, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_jgreenwald_libs_tsutil_tic, __pyx_n_s_nearby_streaker, 82, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__61)) __PYX_ERR(6, 82, __pyx_L1_error)
+
+  /* "ticks.pyx":169
+ * @cython.cdivision(True)
+ * @cython.boundscheck(False)
+ * def nearby_wmid_changes(np.ndarray[double,ndim=2] md, np.ndarray[long,ndim=1] times, long window_size, long cap = 100):             # <<<<<<<<<<<<<<
+ *     """
+ *     Times MUST be a unique list of timestamps as LONGS. Prices should be
+ */
+  __pyx_tuple__62 = PyTuple_Pack(19, __pyx_n_s_md, __pyx_n_s_times, __pyx_n_s_window_size, __pyx_n_s_cap, __pyx_n_s_t_len, __pyx_n_s_md_len, __pyx_n_s_i, __pyx_n_s_win_size, __pyx_n_s_t_diff, __pyx_n_s_j, __pyx_n_s_window_start, __pyx_n_s_this_strike, __pyx_n_s_strike_diff, __pyx_n_s_start_prices, __pyx_n_s_finish_prices, __pyx_n_s_res, __pyx_n_s_buys, __pyx_n_s_sells, __pyx_n_s_k); if (unlikely(!__pyx_tuple__62)) __PYX_ERR(6, 169, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__62);
+  __Pyx_GIVEREF(__pyx_tuple__62);
+  __pyx_codeobj__63 = (PyObject*)__Pyx_PyCode_New(4, 0, 19, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__62, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_jgreenwald_libs_tsutil_tic, __pyx_n_s_nearby_wmid_changes, 169, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__63)) __PYX_ERR(6, 169, __pyx_L1_error)
+
   /* "tsutil.pyx":32
  * @cython.cdivision(True)
  * @cython.boundscheck(False)
  * def fix_times(np.ndarray[long, ndim=1] df_times):             # <<<<<<<<<<<<<<
  *     return fix_timestamps(df_times)
  */
-  __pyx_tuple__60 = PyTuple_Pack(1, __pyx_n_s_df_times); if (unlikely(!__pyx_tuple__60)) __PYX_ERR(1, 32, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__60);
-  __Pyx_GIVEREF(__pyx_tuple__60);
-  __pyx_codeobj__61 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__60, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_jgreenwald_libs_tsutil_tsu, __pyx_n_s_fix_times, 32, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__61)) __PYX_ERR(1, 32, __pyx_L1_error)
+  __pyx_tuple__64 = PyTuple_Pack(1, __pyx_n_s_df_times); if (unlikely(!__pyx_tuple__64)) __PYX_ERR(1, 32, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__64);
+  __Pyx_GIVEREF(__pyx_tuple__64);
+  __pyx_codeobj__65 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__64, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_jgreenwald_libs_tsutil_tsu, __pyx_n_s_fix_times, 32, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__65)) __PYX_ERR(1, 32, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -17896,13 +20291,46 @@ PyMODINIT_FUNC PyInit_tsutil(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_ticks_to_prev_ticks, __pyx_t_1) < 0) __PYX_ERR(6, 63, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
+  /* "ticks.pyx":78
+ * 
+ * 
+ * EPS = .0001             # <<<<<<<<<<<<<<
+ * 
+ * @cython.cdivision(True)
+ */
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_EPS, __pyx_float__0001) < 0) __PYX_ERR(6, 78, __pyx_L1_error)
+
+  /* "ticks.pyx":82
+ * @cython.cdivision(True)
+ * @cython.boundscheck(False)
+ * def nearby_streaker(np.ndarray[double,ndim=2] md, np.ndarray[long,ndim=1] times, long window_size, long cap = 100):             # <<<<<<<<<<<<<<
+ *     """
+ *     Times MUST be a unique list of timestamps as LONGS. Prices should be
+ */
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6tsutil_43nearby_streaker, NULL, __pyx_n_s_tsutil); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 82, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_nearby_streaker, __pyx_t_1) < 0) __PYX_ERR(6, 82, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "ticks.pyx":169
+ * @cython.cdivision(True)
+ * @cython.boundscheck(False)
+ * def nearby_wmid_changes(np.ndarray[double,ndim=2] md, np.ndarray[long,ndim=1] times, long window_size, long cap = 100):             # <<<<<<<<<<<<<<
+ *     """
+ *     Times MUST be a unique list of timestamps as LONGS. Prices should be
+ */
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6tsutil_45nearby_wmid_changes, NULL, __pyx_n_s_tsutil); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 169, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_nearby_wmid_changes, __pyx_t_1) < 0) __PYX_ERR(6, 169, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
   /* "tsutil.pyx":32
  * @cython.cdivision(True)
  * @cython.boundscheck(False)
  * def fix_times(np.ndarray[long, ndim=1] df_times):             # <<<<<<<<<<<<<<
  *     return fix_timestamps(df_times)
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6tsutil_43fix_times, NULL, __pyx_n_s_tsutil); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 32, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6tsutil_47fix_times, NULL, __pyx_n_s_tsutil); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_fix_times, __pyx_t_1) < 0) __PYX_ERR(1, 32, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
