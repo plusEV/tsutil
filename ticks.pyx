@@ -1,3 +1,5 @@
+from libc.math cimport isnan
+
 EPS = .0001
 
 def tickDir(double last_bid, double last_ask, double cur_bid, double cur_ask):
@@ -14,6 +16,54 @@ def tickPrice(double last_bid, double last_ask, double cur_bid, double cur_ask, 
     elif cur_bid < last_bid: #soft downtick
         return last_bid + ts
     return 0
+
+def tick_dirs_multi(np.ndarray[object, ndim=1] syms, np.ndarray[double, ndim=2] md, np.ndarray[double, ndim=1] widths):
+    cdef:
+        long N = md.shape[0]
+        long X=0, side
+        long i
+
+        dict lasts = {}
+        object sym
+
+        double last_bid = 0
+        double last_ask = 0
+        double prc, last_prc, last_side, width
+        cdef np.ndarray[np.double_t, ndim=1] ticks = np.zeros(N,dtype=np.double)
+    
+    assert(len(syms) == len(md))
+
+    for i in range(N):
+
+        sym = syms[i]
+        width = widths[i]
+        if not lasts.has_key(sym):
+            lasts[sym] = [md[i,0],md[i,1],md[i,0],0]
+            continue
+
+        last_bid = lasts[sym][0]
+        last_ask = lasts[sym][1]
+        last_prc = lasts[sym][2]
+        last_side = lasts[sym][3]
+
+        if last_bid != 0 and last_ask != 0:
+
+            prc = tickPrice(last_bid,last_ask, md[i,0],md[i,1],ts)
+            side = tickDir(last_bid,last_ask, md[i,0],md[i,1])
+            
+            if side == 1:
+                if not (last_side == 1 and prc <= last_prc):
+                    ticks[i] = side
+            elif side == -1:
+                if not (last_side == -1 and prc >= last_prc):
+                    ticks[i] = side
+                
+
+        if ticks[i] != 0:
+            lasts[sym] = [md[i,0],md[i,1],prc,side]
+        else:
+            lasts[sym] = [md[i,0],md[i,1],last_prc,last_side]
+    return ticks
 
 def tick_dirs(np.ndarray[double, ndim=2] md, double ts = .01):
     cdef:
