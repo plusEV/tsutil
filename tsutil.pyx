@@ -4,7 +4,7 @@ cimport numpy as np
 import bisect
 
 
-cdef inline double wmid(long bidp, long bids, long askp, long asks, long tw):
+cdef inline double wmid(double bidp, double bids, double askp, double asks, double tw):
     if (bids+asks)<=0:
         return -1
     if (askp-bidp>tw):

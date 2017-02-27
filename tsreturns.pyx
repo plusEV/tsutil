@@ -4,7 +4,9 @@ import pandas as pd
 
 
 def ts_returns(some_df,timestamps,tw,theos=pd.Series(),mode='bp', 
-                buckets=[-180000,-30000,-10000,-5000,-1000,0,1000,5000,10000,30000,180000], colnames = ['bp0','bz0','ap0','az0']):
+                buckets=[-180000,-30000,-10000,-5000,-1000,0,1000,5000,10000,30000,180000], 
+                colnames = ['bp0','bz0','ap0','az0'],
+                tz = 'Asia/Seoul'):
     """
     Calculates basis point returns from array of long timestamps indexing into ref frame.
     
@@ -28,7 +30,7 @@ def ts_returns(some_df,timestamps,tw,theos=pd.Series(),mode='bp',
         long t_len = ts.size, b_len = bucks.size,f_len = some_df.shape[0]
         long this_stamp, this_pos, stop_stamp, window_stop, i, j, k
         long A_MILLI = 1000000 # A MILLI A MILLI
-        double b
+        double b, wm
     
     
     for i in range(t_len):
@@ -42,8 +44,12 @@ def ts_returns(some_df,timestamps,tw,theos=pd.Series(),mode='bp',
             k = this_pos
             b = bucks[j] #this bucket
             if b==0:
-                vals[i,j] = wmid(some_df.ix[this_stamp,colnames[0]],some_df.ix[this_stamp,colnames[1]],\
+                wm = wmid(some_df.ix[this_stamp,colnames[0]],some_df.ix[this_stamp,colnames[1]],\
                            some_df.ix[this_stamp,colnames[2]],some_df.ix[this_stamp,colnames[3]],tw) 
+                if wm < 0:
+                    vals[i,j] = np.NaN
+                else:
+                    vals[i,j] = wm
                 continue
             window_stop = (long)(ts[i] + b * A_MILLI)
             if b<0:
@@ -59,11 +65,16 @@ def ts_returns(some_df,timestamps,tw,theos=pd.Series(),mode='bp',
             stop_stamp = some_df.index[k]
             if (stop_stamp - this_stamp) > (buckets[-1]*2*A_MILLI):
                 continue #don't include cross session nonsense
-            vals[i,j] = wmid(some_df.ix[stop_stamp,colnames[0]],some_df.ix[stop_stamp,colnames[1]],\
-                           some_df.ix[stop_stamp,colnames[2]],some_df.ix[stop_stamp,colnames[3]],tw) 
+            wm = wmid(some_df.ix[stop_stamp,colnames[0]],some_df.ix[stop_stamp,colnames[1]],\
+                           some_df.ix[stop_stamp,colnames[2]],some_df.ix[stop_stamp,colnames[3]],tw)
+            vals[i,j] =  wm
+            if wm < 0:
+                vals[i,j] = np.NaN
 
     
     res = pd.DataFrame(vals,index=pd.to_datetime(timestamps),columns=buckets)
+    if tz is not None:
+        res.index = res.index.tz_localize('UTC').tz_convert('Asia/Seoul')
     if len(theos)==res.shape[0]:
         print "Using Theos..."
         res[0.0] = theos.values

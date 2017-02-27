@@ -48,7 +48,7 @@ def tick_dirs_multi(np.ndarray[object, ndim=1] syms, np.ndarray[double, ndim=2] 
 
         if last_bid != 0 and last_ask != 0:
 
-            prc = tickPrice(last_bid,last_ask, md[i,0],md[i,1],ts)
+            prc = tickPrice(last_bid,last_ask, md[i,0],md[i,1],width)
             side = tickDir(last_bid,last_ask, md[i,0],md[i,1])
             
             if side == 1:
